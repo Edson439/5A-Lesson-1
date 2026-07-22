@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instagram Post</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+    }
+
+    body {
+      padding: 20px;
+      background: #fff;
+      color: #151515;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .instagram-post {
+      width: min(760px, 100%);
+      background: #fff;
+      border: 2px solid #d9e7fb;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+
+    .post-header {
+      min-height: 88px;
+      padding: 15px 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .profile-avatar {
+      width: 54px;
+      height: 54px;
+      flex: 0 0 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    }
+
+    .avatar-fallback {
+      width: 54px;
+      height: 54px;
+      flex: 0 0 54px;
+      display: none;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(135deg, #284b8f, #6f9be8);
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .profile-details {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .profile-name {
+      color: #111;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .profile-location {
+      margin-top: 4px;
+      color: #737373;
+      font-size: 15px;
+    }
+
+    .more-button {
+      margin-left: auto;
+      border: 0;
+      background: transparent;
+      color: #333;
+      font-size: 27px;
+      cursor: default;
+      line-height: 1;
+    }
+
+    .post-image {
+      display: block;
+      width: 100%;
+	  height: 420px;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      background: #eef2f7;
+    }
+
+    .post-content {
+      padding: 18px 24px 22px;
+    }
+
+    .post-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 20px;
+      color: #252525;
+      font-size: 29px;
+    }
+
+    .post-actions .save {
+      margin-left: auto;
+    }
+
+    .caption {
+      font-size: clamp(23px, 3vw, 34px);
+      line-height: 1.35;
+      letter-spacing: -.25px;
+    }
+
+    .caption p {
+      margin: 0 0 25px;
+    }
+
+    .spoken-word {
+      display: inline;
+      padding: 0 .045em;
+      margin: 0 -.045em;
+      border-radius: 6px;
+      transition: background-color .07s linear, color .07s linear;
+    }
+
+    .spoken-word.blue-word {
+      color: #2f70dc;
+      font-weight: 600;
+    }
+
+    .spoken-word.is-current {
+      color: #fff !important;
+      background: #3f7de0;
+      box-shadow: 0 0 0 2px rgba(63,125,224,.08);
+    }
+
+    .spoken-word.is-read:not(.is-current) {
+      color: #111;
+    }
+
+    .spoken-word.blue-word.is-read:not(.is-current) {
+      color: #2f70dc;
+    }
+
+    .spoken-word.clickable-word {
+      cursor: pointer;
+    }
+
+    .spoken-word.clickable-word:hover {
+      color: #ef4444 !important;
+      background: #fdeaea;
+      text-decoration: underline;
+      text-decoration-color: #ef4444;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 4px;
+    }
+
+
+    .audio-player {
+      display: grid;
+      grid-template-columns: 62px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .play-button {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      background: #3977df;
+      cursor: pointer;
+      box-shadow: 0 2px 7px rgba(44,103,198,.28);
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .play-button:hover { transform: scale(1.04); }
+    .play-button:active { transform: scale(.98); }
+    .play-button i { pointer-events: none; }
+
+    .progress-wrap {
+      height: 34px;
+      display: flex;
+      align-items: center;
+    }
+
+    .progress {
+      width: 100%;
+      height: 9px;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 999px;
+      cursor: pointer;
+      outline: none;
+      background: linear-gradient(to right,
+        #3977df 0%, #3977df 0%,
+        #e9eef8 0%, #e9eef8 100%);
+    }
+
+    .progress::-webkit-slider-thumb {
+      width: 20px;
+      height: 20px;
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+      border-radius: 50%;
+      background: #3977df;
+      box-shadow: 0 1px 4px rgba(0,0,0,.22);
+    }
+
+    .progress::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border: none;
+      border-radius: 50%;
+      background: #3977df;
+      box-shadow: 0 1px 4px rgba(0,0,0,.22);
+    }
+
+    .time {
+      min-width: 82px;
+      color: #667085;
+      font-size: 15px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .error-message {
+      display: none;
+      margin: 12px 0 0 76px;
+      color: #b42318;
+      font-size: 14px;
+    }
+	.caption p[data-icon-before]::before {
+	  content: attr(data-icon-before);
+	  display: inline;
+	  margin-right: 8px;
+	  text-decoration: none;
+	}
+
+	.caption p[data-icon-after]::after {
+	  content: attr(data-icon-after);
+	  display: inline;
+	  margin-left: 8px;
+	  text-decoration: none;
+	}
+    @media (max-width: 650px) {
+      body { padding: 10px; }
+      .instagram-post { border-radius: 16px; }
+      .post-header { padding: 12px 16px; }
+      .post-content { padding: 15px 17px 18px; }
+      .profile-avatar, .avatar-fallback {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+      }
+      .profile-name { font-size: 21px; }
+      .audio-player {
+        grid-template-columns: 54px 1fr;
+      }
+      .play-button {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+      }
+      .time {
+        grid-column: 2;
+        text-align: left;
+        margin-top: -8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="instagram-post">
+
+    <header class="post-header">
+      <img
+        src="images/martin-smith.png"
+        alt="Martin"
+        class="profile-avatar"
+        onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='grid';">
+
+      <div class="avatar-fallback" id="avatarFallback">JW</div>
+
+      <div class="profile-details">
+        <span class="profile-name">Martin</span>
+        <span class="profile-location">East Ridge Soccer Field </span>
+      </div>
+
+      <button class="more-button" type="button" aria-label="More options">•••</button>
+    </header>
+
+    <img
+      class="post-image"
+      src="images/insta.png"
+      alt="Martin with her soccer team">
+
+    <div class="post-content">
+
+      <div class="post-actions" aria-hidden="true">
+        <i class="fa-regular fa-heart"></i>
+        <i class="fa-regular fa-comment"></i>
+        <i class="fa-regular fa-paper-plane"></i>
+        <i class="fa-regular fa-bookmark save"></i>
+      </div>
+
+      <div class="caption">
+		<p
+		  data-speech="First game next week!"
+		  data-icon-after="💙"
+		  data-blue="">
+		</p>
+
+        <p
+          data-speech="Our new uniforms are ready! I have number 10 this season! Our coach has a plan for our first game, and everyone is ready."
+          data-blue="uniforms, number, season">
+        </p>
+
+		<p
+		  data-speech="We can't wait to play!"
+		  data-icon-before="🍀"
+		  data-blue="">
+		</p>
+      </div>
+
+      <div class="audio-player">
+        <button
+          class="play-button"
+          id="playButton"
+          type="button"
+          aria-label="Play audio">
+          <i class="fa-solid fa-play"></i>
+        </button>
+
+        <div class="progress-wrap">
+          <input
+            class="progress"
+            id="progress"
+            type="range"
+            min="0"
+            max="1000"
+            value="0"
+            aria-label="Audio progress">
+        </div>
+
+        <div class="time" id="timeLabel">0:00 / 0:00</div>
+      </div>
+
+      <p class="error-message" id="errorMessage">
+        No se encontró el audio. Verifica que exista en:
+        audios/instagram-post-audio.mp3
+      </p>
+
+      <audio
+        id="audio"
+        src="audios/instagram-post-audio.mp3"
+        preload="metadata">
+      </audio>
+    </div>
+  </article>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const audio = document.getElementById('audio');
+      const playButton = document.getElementById('playButton');
+      const progress = document.getElementById('progress');
+      const timeLabel = document.getElementById('timeLabel');
+      const errorMessage = document.getElementById('errorMessage');
+      const paragraphs = Array.from(document.querySelectorAll('[data-speech]'));
+
+      const words = [];
+      let timeline = [];
+      let isDragging = false;
+      let animationFrameId = null;
+
+      paragraphs.forEach(function (paragraph) {
+        const sentence = paragraph.dataset.speech.trim();
+
+        const blueWords = (paragraph.dataset.blue || '')
+          .toLowerCase()
+          .split(',')
+          .map(function (word) { return word.trim(); })
+          .filter(Boolean);
+
+        const tokens = sentence.match(/\S+/g) || [];
+
+        tokens.forEach(function (token, index) {
+          const span = document.createElement('span');
+          span.className = 'spoken-word';
+          span.textContent = token;
+
+          const cleanToken = token
+            .toLowerCase()
+            .replace(/[^a-z0-9']/g, '');
+			// No resaltar ni hacer clic en emojis o iconos
+			const isIcon = cleanToken === '';
+
+			if (isIcon) {
+			  span.classList.add('no-highlight');
+			}
+
+          if (blueWords.includes(cleanToken)) {
+            span.classList.add('blue-word');
+          }
+
+          const nonClickableWords = ['martin'];
+
+          if (!isIcon && cleanToken && !nonClickableWords.includes(cleanToken)) {
+            span.classList.add('clickable-word');
+            span.dataset.popup = 'colorchart/' + cleanToken + '.html';
+            span.setAttribute('role', 'button');
+            span.setAttribute('tabindex', '0');
+            span.setAttribute('aria-label', 'Open ' + cleanToken);
+          }
+
+          paragraph.appendChild(span);
+          words.push({ element: span, token: token });
+
+          if (index < tokens.length - 1) {
+            paragraph.appendChild(document.createTextNode(' '));
+          }
+        });
+      });
+
+      function openWordPopup(file) {
+        if (!file) return;
+
+        window.parent.postMessage({
+          type: 'email-popup-open',
+          file: file
+        }, '*');
+      }
+
+document.querySelectorAll('.spoken-word[data-popup]')
+	  .forEach(function (word) {
+		word.addEventListener('click', function () {
+		  openWordPopup(word.dataset.popup);
+		});
+
+		word.addEventListener('keydown', function (event) {
+		  if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			openWordPopup(word.dataset.popup);
+		  }
+		});
+	  });
+
+      /*
+        Tiempos iniciales aproximados.
+        Cada número corresponde al inicio de una palabra.
+        Después puedes ajustarlos al audio real.
+      */
+const wordStartTimes = [
+  // First game next week!
+  0.15, // First
+  0.46, // game
+  0.70, // next
+  0.93, // week!
+
+  // Our new uniforms are ready!
+  1.80, // Our
+  1.89, // new
+  2.05, // uniforms
+  2.52, // are
+  2.68, // ready!
+
+  // I have number 10 this season!
+  3.70, // I
+  3.76, // have
+  3.90, // number
+  4.23, // 10
+  4.49, // this
+  4.71, // season!
+
+  // Our coach has a plan for our first game, and everyone is ready.
+  5.78, // Our
+  5.91, // coach
+  6.11, // has
+  6.28, // a
+  6.40, // plan
+  6.71, // for
+  6.88, // our
+  6.95, // first
+  7.31, // game,
+  7.79, // and
+  7.95, // everyone
+  8.36, // is
+  8.49, // ready.
+
+  // We can't wait to play!
+  9.09, // We
+  9.20, // can't
+  9.45, // wait
+  9.80, // to
+  9.95 // play!
+];
+
+      function buildTimeline() {
+        const duration = audio.duration;
+
+        if (!Number.isFinite(duration) || duration <= 0 || words.length === 0) {
+          return;
+        }
+
+        timeline = words.map(function (item, index) {
+          const start = wordStartTimes[index] ?? duration + index;
+
+          const end =
+            index < wordStartTimes.length - 1
+              ? wordStartTimes[index + 1]
+              : duration;
+
+          return {
+            element: item.element,
+            start: start,
+            end: end
+          };
+        });
+      }
+
+      function updateHighlight(time) {
+        for (let i = 0; i < timeline.length; i++) {
+          const item = timeline[i];
+          const isCurrent = time >= item.start && time < item.end;
+
+			if (!item.element.classList.contains('no-highlight')) {
+			  item.element.classList.toggle('is-current', isCurrent);
+			  item.element.classList.toggle('is-read', time >= item.end);
+			}
+        }
+
+        if (
+          audio.ended ||
+          (Number.isFinite(audio.duration) && time >= audio.duration)
+        ) {
+          timeline.forEach(function (item) {
+            item.element.classList.remove('is-current');
+            item.element.classList.add('is-read');
+          });
+        }
+      }
+
+      function formatTime(seconds) {
+        if (!Number.isFinite(seconds)) return '0:00';
+
+        const minutes = Math.floor(seconds / 60);
+        const remaining = Math
+          .floor(seconds % 60)
+          .toString()
+          .padStart(2, '0');
+
+        return minutes + ':' + remaining;
+      }
+
+      function paintProgress(percent) {
+        const safePercent = Math.max(0, Math.min(100, percent));
+
+        progress.style.background =
+          'linear-gradient(to right,' +
+          ' #3977df 0%,' +
+          ' #3977df ' + safePercent + '%,' +
+          ' #e9eef8 ' + safePercent + '%,' +
+          ' #e9eef8 100%)';
+      }
+
+      function updateInterface() {
+        const duration =
+          Number.isFinite(audio.duration)
+            ? audio.duration
+            : 0;
+
+        const percent =
+          duration > 0
+            ? (audio.currentTime / duration) * 100
+            : 0;
+
+        if (!isDragging) {
+          progress.value = Math.round(percent * 10);
+        }
+
+        paintProgress(
+          isDragging
+            ? Number(progress.value) / 10
+            : percent
+        );
+
+        timeLabel.textContent =
+          formatTime(audio.currentTime) +
+          ' / ' +
+          formatTime(duration);
+
+        updateHighlight(audio.currentTime);
+      }
+
+      function animationLoop() {
+        updateInterface();
+
+        if (!audio.paused && !audio.ended) {
+          animationFrameId = requestAnimationFrame(animationLoop);
+        }
+      }
+
+      playButton.addEventListener('click', function () {
+        if (audio.paused) {
+          audio.play().catch(function () {
+            errorMessage.style.display = 'block';
+          });
+        } else {
+          audio.pause();
+        }
+      });
+
+      progress.addEventListener('input', function () {
+        isDragging = true;
+
+        const duration =
+          Number.isFinite(audio.duration)
+            ? audio.duration
+            : 0;
+
+        const chosenTime =
+          duration * (Number(progress.value) / 1000);
+
+        audio.currentTime = chosenTime;
+        paintProgress(Number(progress.value) / 10);
+
+        timeLabel.textContent =
+          formatTime(chosenTime) +
+          ' / ' +
+          formatTime(duration);
+
+        updateHighlight(chosenTime);
+      });
+
+      progress.addEventListener('change', function () {
+        isDragging = false;
+        updateInterface();
+      });
+
+      audio.addEventListener('loadedmetadata', function () {
+        errorMessage.style.display = 'none';
+        buildTimeline();
+        updateInterface();
+      });
+
+      audio.addEventListener('durationchange', buildTimeline);
+      audio.addEventListener('seeking', updateInterface);
+      audio.addEventListener('seeked', updateInterface);
+
+      audio.addEventListener('play', function () {
+        playButton.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        playButton.setAttribute('aria-label', 'Pause audio');
+
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+
+        animationLoop();
+      });
+
+      audio.addEventListener('pause', function () {
+        playButton.innerHTML = '<i class="fa-solid fa-play"></i>';
+        playButton.setAttribute('aria-label', 'Play audio');
+
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+
+        updateInterface();
+      });
+
+      audio.addEventListener('ended', function () {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+
+        updateInterface();
+      });
+
+      audio.addEventListener('error', function () {
+        errorMessage.style.display = 'block';
+      });
+
+      updateInterface();
+    });
+  </script>
+</body>
+</html>

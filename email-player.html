@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to the travel team!</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: #151515;
+      padding: 24px 38px 24px;
+    }
+    .email-player {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+	  .subject-bar{
+		  display:flex;
+		  align-items:baseline;
+		  gap:16px;
+		}
+
+		.subject-label{
+		  color:#8b8b8b;
+		  font-size:32px;
+		  flex-shrink:0;
+		}
+
+		.subject-divider{
+		  border:0;
+		  border-top:2px solid #e5e5e5;
+		  margin:0 0 34px;
+		}
+	.subject {
+	  margin: 0 0 34px;
+	  color: #2f70dc;
+	  font-size: clamp(30px, 4vw, 54px);
+	  line-height: 1.14;
+	  font-weight: 400;
+	  letter-spacing: -0.7px;
+	}
+	.sender-row {
+	  display: flex;
+	  align-items: center;
+	  gap: 16px;
+	  margin-bottom: 46px;
+	}
+    .avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      background: linear-gradient(135deg, #263238, #78909c);
+      color: white;
+      font-size: 27px;
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(0,0,0,.18);
+    }
+
+    .sender-info {
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+	.sender-name {
+	  color: #2f70dc;
+	  font-size: clamp(20px, 2vw, 28px);
+	  font-weight: 700;
+	}
+	.sender-email {
+	  color: #777;
+	  font-size: clamp(12px, 1.2vw, 16px);
+	}
+.email-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  color: #555;
+  font-size: 24px;
+  user-select: none;
+}
+    .email-body {
+      font-size: clamp(28px, 3.35vw, 48px);
+      line-height: 1.36;
+      letter-spacing: -0.4px;
+    }
+    .email-body p { margin: 0 0 42px; }
+    .spoken-word {
+      display: inline;
+      border-radius: 7px;
+      padding: 0 .055em;
+      margin: 0 -.055em;
+      transition: background-color .07s linear, color .07s linear;
+    }
+    .spoken-word.blue-word { color: #2f70dc; font-weight: 600; }
+    .spoken-word.is-current {
+      color: #fff !important;
+      background: #3f7de0;
+      box-shadow: 0 0 0 2px rgba(63,125,224,.08);
+    }
+    .spoken-word.is-read:not(.is-current) { color: #111; }
+    .spoken-word.blue-word.is-read:not(.is-current) { color: #2f70dc; }
+
+    /* Palabras que abren el Color Chart */
+    .spoken-word.clickable-word {
+      cursor: pointer;
+    }
+
+    .spoken-word.clickable-word:hover {
+      color: #ef4444 !important;
+      background: #fdeaea;
+      text-decoration: underline;
+      text-decoration-color: #ef4444;
+      text-underline-offset: 4px;
+      text-decoration-thickness: 3px;
+    }
+
+    /* Ventana emergente */
+    .word-popup {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(20, 26, 35, .55);
+    }
+
+    .word-popup.is-open {
+      display: flex;
+    }
+
+    .word-popup-panel {
+      position: relative;
+      width: min(760px, 96vw);
+      height: min(620px, 88vh);
+      overflow: hidden;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .30);
+    }
+
+    .word-popup-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      color: #fff;
+      background: #ef4444;
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .22);
+    }
+
+    .word-popup-close:hover {
+      transform: scale(1.06);
+    }
+
+    .word-popup-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #fff;
+    }
+
+    .audio-player {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: 68px 1fr auto;
+      align-items: center;
+      gap: 16px;
+    }
+    .play-button {
+      width: 62px;
+      height: 62px;
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      background: #3977df;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 7px rgba(44,103,198,.28);
+      font-size: 31px;
+      line-height: 1;
+    }
+    .play-button:hover { transform: scale(1.04); }
+    .play-button:active { transform: scale(.98); }
+    .progress-wrap {
+      position: relative;
+      height: 34px;
+      display: flex;
+      align-items: center;
+    }
+    .progress {
+      width: 100%;
+      height: 10px;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 999px;
+      cursor: pointer;
+      outline: none;
+      background: linear-gradient(to right, #3977df 0%, #3977df 0%, #e9eef8 0%, #e9eef8 100%);
+    }
+    .progress::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #3977df;
+      border: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,.22);
+    }
+    .progress::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #3977df;
+      border: none;
+      box-shadow: 0 1px 4px rgba(0,0,0,.22);
+    }
+    .time {
+      min-width: 84px;
+      color: #667085;
+      font-size: 16px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+    .error-message {
+      display: none;
+      margin: 14px 0 0 84px;
+      color: #b42318;
+      font-size: 15px;
+    }
+.profile-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  flex: 0 0 46px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.18);
+}
+	.title-clickable {
+	  color: inherit;
+	  cursor: pointer;
+	  transition:
+		color 0.18s ease,
+		text-decoration-color 0.18s ease;
+	}
+
+	.title-clickable:hover {
+	  color: #ef4444;
+	  text-decoration: underline;
+	  text-decoration-color: #ef4444;
+	  text-decoration-thickness: 3px;
+	  text-underline-offset: 7px;
+	}
+    @media (max-width: 700px) {
+      body { padding: 22px 18px; }
+      .subject { margin-bottom: 24px; }
+      .sender-row { margin-bottom: 32px; }
+      .email-actions { display: none; }
+      .email-body p { margin-bottom: 30px; }
+      .audio-player { grid-template-columns: 58px 1fr; gap: 12px; }
+      .play-button { width: 54px; height: 54px; font-size: 27px; }
+      .time { grid-column: 2; min-width: 0; text-align: left; margin-top: -8px; }
+      .error-message { margin-left: 70px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="email-player">
+	<div class="subject-bar">
+
+	  <span class="subject-label">Subject:</span>
+
+	  <h1 class="subject">
+		<span class="title-clickable" data-popup="colorchart/important.html">Important</span>
+		<span class="title-clickable" data-popup="colorchart/information.html"><b>information</b></span>
+	  </h1>
+
+	</div>
+
+	<hr class="subject-divider">
+
+    <div class="sender-row">
+      <img src="images/coach-ramirez.png" alt="Coach Ramírez" class="profile-avatar">
+      <div class="sender-info">
+        <span class="sender-name">Coach Ramirez</span>
+        <span class="sender-email">&lt;c_ramirez@ersoccerclub.com&gt;</span>
+      </div>
+      <div class="email-actions" aria-hidden="true">
+        <span>☆</span><span>☺</span><span>↩</span><span>⋮</span>
+      </div>
+    </div>
+
+    <section class="email-body" id="emailText" aria-label="Email message">
+      <p data-speech="Hello Martin,"></p>
+      <p data-speech="You have locker number 30 this season." data-blue="locker"></p>
+      <p data-speech="Your locker has space for your uniform, shoes, and other items. Please keep it clean after every practice." data-blue="items"></p>
+      <p data-speech="See you on Tuesday!"></p>
+      <p data-speech="Coach Ramirez"></p>
+    </section>
+
+    <div class="audio-player">
+      <button class="play-button" id="playButton" type="button" aria-label="Play audio">
+		  <i class="fa-solid fa-play"></i>
+		</button>
+      <div class="progress-wrap">
+        <input class="progress" id="progress" type="range" min="0" max="1000" value="0" aria-label="Audio progress">
+      </div>
+      <div class="time" id="timeLabel">0:00 / 0:00</div>
+    </div>
+    <p class="error-message" id="errorMessage">No se encontró el audio. Verifica que exista en: audios/email-audio.mp3</p>
+
+    <audio id="audio" src="audios/email-audio.mp3" preload="metadata"></audio>
+
+    <div class="word-popup" id="wordPopup" aria-hidden="true">
+      <div class="word-popup-panel" role="dialog" aria-modal="true" aria-label="Word information">
+        <button class="word-popup-close" id="wordPopupClose" type="button" aria-label="Close">×</button>
+        <iframe class="word-popup-frame" id="wordPopupFrame" title="Word information"></iframe>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const audio = document.getElementById('audio');
+      const playButton = document.getElementById('playButton');
+      const progress = document.getElementById('progress');
+      const timeLabel = document.getElementById('timeLabel');
+      const errorMessage = document.getElementById('errorMessage');
+      const wordPopup = document.getElementById('wordPopup');
+      const wordPopupFrame = document.getElementById('wordPopupFrame');
+      const wordPopupClose = document.getElementById('wordPopupClose');
+      const paragraphs = Array.from(document.querySelectorAll('[data-speech]'));
+      const words = [];
+		let timeline = [];
+		let isDragging = false;
+		let animationFrameId = null;
+
+      paragraphs.forEach(function (paragraph) {
+        const sentence = paragraph.dataset.speech.trim();
+        const blueWords = (paragraph.dataset.blue || '').toLowerCase().split(',').map(s => s.trim()).filter(Boolean);
+        const tokens = sentence.match(/\S+/g) || [];
+
+        tokens.forEach(function (token, index) {
+          const span = document.createElement('span');
+          span.className = 'spoken-word';
+          span.textContent = token;
+
+          const cleanToken = token.toLowerCase().replace(/[^a-z0-9']/g, '');
+          if (blueWords.includes(cleanToken)) span.classList.add('blue-word');
+
+		const nonClickableWords = ['martin', 'ramirez'];
+
+		if (cleanToken && !nonClickableWords.includes(cleanToken)) {
+		  span.classList.add('clickable-word');
+		  span.dataset.popup = 'colorchart/' + cleanToken + '.html';
+		  span.setAttribute('role', 'button');
+		  span.setAttribute('tabindex', '0');
+		  span.setAttribute('aria-label', 'Open ' + cleanToken);
+		}
+
+          paragraph.appendChild(span);
+          words.push({ element: span, token: token });
+
+          if (index < tokens.length - 1) paragraph.appendChild(document.createTextNode(' '));
+        });
+      });
+
+	function openWordPopup(file) {
+  if (!file) return;
+
+  window.parent.postMessage({
+    type: 'email-popup-open',
+    file: file
+  }, '*');
+}
+
+	function closeWordPopup() {
+  window.parent.postMessage({
+    type: 'email-popup-close'
+  }, '*');
+}
+
+	document.querySelectorAll('.spoken-word[data-popup], .title-clickable[data-popup]').forEach(function (word) {
+        word.addEventListener('click', function () {
+          openWordPopup(word.dataset.popup);
+        });
+
+        word.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openWordPopup(word.dataset.popup);
+          }
+        });
+      });
+
+      wordPopupClose.addEventListener('click', closeWordPopup);
+
+      wordPopup.addEventListener('click', function (event) {
+        if (event.target === wordPopup) {
+          closeWordPopup();
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && wordPopup.classList.contains('is-open')) {
+          closeWordPopup();
+        }
+      });
+		window.addEventListener('message', function (event) {
+		  if (event.data === 'close-email-popup') {
+			closeWordPopup();
+		  }
+		});
+
+		const wordStartTimes = [
+		  0.10, // Hello
+		  0.36, // Martin,
+		  1.35, // You
+		  1.53, // have
+		  1.68, // locker
+		  2.07, // number
+		  2.45, // 30
+		  2.79, // this
+		  2.97, // season.
+
+		  4.10, // Your
+		  4.26, // locker
+		  4.68, // has
+		  4.90, // space
+		  5.12, // for
+		  5.45, // your
+		  5.59, // uniform,
+		  6.36, // shoes,
+		  7.05, // and
+		  7.24, // other
+		  7.46, // items.
+
+		  8.58, // Please
+		  8.94, // keep
+		  9.15, // it
+		  9.26, // clean
+		  9.64, // after
+		  10.05, // every
+		  10.40, // practice.
+
+		  11.66, // See
+		  11.93, // you
+		  12.04, // on
+		  12.19, // Tuesday!
+
+		  13.26, // Coach
+		  13.60  // Ramirez
+		];
+
+		function buildAutomaticTimeline() {
+		  const duration = audio.duration;
+
+		  if (!Number.isFinite(duration) || duration <= 0 || words.length === 0) {
+			return;
+		  }
+
+		  timeline = words.map(function (item, index) {
+			const start = wordStartTimes[index] ?? 0;
+
+			const end =
+			  index < wordStartTimes.length - 1
+				? wordStartTimes[index + 1]
+				: duration;
+
+			return {
+			  element: item.element,
+			  start: start,
+			  end: end
+			};
+		  });
+		}
+
+
+
+      function updateHighlight(time) {
+        let currentIndex = -1;
+
+        for (let i = 0; i < timeline.length; i++) {
+          const item = timeline[i];
+          const isCurrent = time >= item.start && time < item.end;
+          item.element.classList.toggle('is-current', isCurrent);
+          item.element.classList.toggle('is-read', time >= item.end);
+          if (isCurrent) currentIndex = i;
+        }
+
+        if (audio.ended || (Number.isFinite(audio.duration) && time >= audio.duration)) {
+          timeline.forEach(item => {
+            item.element.classList.remove('is-current');
+            item.element.classList.add('is-read');
+          });
+        }
+      }
+
+      function formatTime(seconds) {
+        if (!Number.isFinite(seconds)) return '0:00';
+        const minutes = Math.floor(seconds / 60);
+        const remaining = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return minutes + ':' + remaining;
+      }
+
+      function paintProgress(percent) {
+        const safePercent = Math.max(0, Math.min(100, percent));
+        progress.style.background =
+          'linear-gradient(to right, #3977df 0%, #3977df ' + safePercent + '%, #e9eef8 ' + safePercent + '%, #e9eef8 100%)';
+      }
+
+      function updateInterface() {
+        const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+        const percent = duration > 0 ? (audio.currentTime / duration) * 100 : 0;
+
+        if (!isDragging) progress.value = Math.round(percent * 10);
+        paintProgress(isDragging ? Number(progress.value) / 10 : percent);
+        timeLabel.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(duration);
+        updateHighlight(audio.currentTime);
+      }
+
+      function animationLoop() {
+        updateInterface();
+
+        if (!audio.paused && !audio.ended) {
+          animationFrameId = requestAnimationFrame(animationLoop);
+        }
+      }
+
+      playButton.addEventListener('click', function () {
+        if (audio.paused) {
+          audio.play().catch(function () {
+            errorMessage.style.display = 'block';
+          });
+        } else {
+          audio.pause();
+        }
+      });
+
+      progress.addEventListener('input', function () {
+        isDragging = true;
+        const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+        const chosenTime = duration * (Number(progress.value) / 1000);
+        audio.currentTime = chosenTime;
+        paintProgress(Number(progress.value) / 10);
+        timeLabel.textContent = formatTime(chosenTime) + ' / ' + formatTime(duration);
+        updateHighlight(chosenTime);
+      });
+
+      progress.addEventListener('change', function () {
+        isDragging = false;
+        updateInterface();
+      });
+
+      audio.addEventListener('loadedmetadata', function () {
+        errorMessage.style.display = 'none';
+        buildAutomaticTimeline();
+        updateInterface();
+      });
+
+      audio.addEventListener('durationchange', buildAutomaticTimeline);
+      audio.addEventListener('seeking', updateInterface);
+      audio.addEventListener('seeked', updateInterface);
+	audio.addEventListener('play', function () {
+	  playButton.innerHTML = '<i class="fa-solid fa-pause"></i>';
+	  playButton.setAttribute('aria-label', 'Pause audio');
+
+	  if (animationFrameId) {
+		cancelAnimationFrame(animationFrameId);
+	  }
+
+	  animationLoop();
+	});
+
+	audio.addEventListener('pause', function () {
+	  playButton.innerHTML = '<i class="fa-solid fa-play"></i>';
+	  playButton.setAttribute('aria-label', 'Play audio');
+
+	  if (animationFrameId) {
+		cancelAnimationFrame(animationFrameId);
+		animationFrameId = null;
+	  }
+
+	  updateInterface();
+	});
+		
+      audio.addEventListener('ended', function () {
+		  if (animationFrameId) {
+			cancelAnimationFrame(animationFrameId);
+			animationFrameId = null;
+		  }
+
+		  updateInterface();
+		});
+      audio.addEventListener('error', function () {
+        errorMessage.style.display = 'block';
+      });
+
+      updateInterface();
+    });
+  </script>
+</body>
+</html>

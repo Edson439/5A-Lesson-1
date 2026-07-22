@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Learning Virtual</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="colorchart.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+<body>
+  <div class="container">
+	  
+	<img src="images/Virtual_03.png" alt="Logo" class="logo2">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="menu-top">
+        <button class="hamburger toggle-sidebar"><i class="fas fa-bars"></i></button>
+      </div>
+		<nav class="menu">
+			<span class="section-title">Class</span>
+		  <a href="#" class="menu-item active" id="menuVocabulary">
+			<img src="images/icons-03.png" alt="Vocabulary icon" class="icon">
+			<span>Target</span>
+		  </a>
+			<a href="#" class="menu-item" id="menuReading">
+			  <img src="images/icons-r.png" alt="Reading icon" class="icon">
+			  <span>Reading</span>
+			</a>
+		  <a href="#" class="menu-item" id="menuPractice">
+			<img src="images/icons-08.png" alt="Practice icon" class="icon">
+			<span>Practice</span>
+		  </a>
+		  <a href="#" class="menu-item" id="menuStudent">
+			<img src="images/icons-05.png" alt="Student icon" class="icon">
+			<span>Challenge</span>
+		  </a>
+			<hr>
+			<span class="section-title" style="margin-top: 20px;">Tools</span>
+		  <a href="#" class="menu-item" id="menuColorChart">
+			<img src="images/icons-02.png" alt="Color Chart icon" class="icon">
+			<span>Color Chart</span>
+		  </a>
+		  <a href="#" class="menu-item" id="menuWhiteboard">
+			<img src="images/icons-04.png" alt="Whiteboard icon" class="icon">
+			<span>Whiteboard</span>
+		  </a>
+
+		  <a href="manual.html" target="_blank" class="menu-item" id="menuManual">
+			<img src="images/icons-07.png" alt="Manual icon" class="icon">
+			<span>Manual</span>
+		  </a>
+		</nav>
+
+    </aside>
+
+    <!-- Main content -->
+    <main class="main-content">
+      <div class="video-wrapper">
+        
+		  <!-- Dots -->
+		<div class="dots" id="dotsContainer"></div>
+
+
+
+		  	<!-- Gramatical Objetivo -->
+			<div id="vocabularyContent" style="display: none;">
+			  <div class="card-container">
+				<!-- Objetivo Gramatical --> 
+
+				<div class="vocab-card active target-video-card">
+				  <video class="target-video" controls>
+					<source src="videos/Nivel5_Leccion1_Target.mp4" type="video/mp4">
+					Your browser does not support the video tag.
+				  </video>
+				</div>
+
+			  </div>
+			</div>							  
+		
+		  <!-- Reading -->
+			<div id="readingContent" style="display: none;">
+			  <div class="card-container">
+
+				<div class="vocab-card active vocab-iframe-card" style="border: none">
+				  <iframe
+					src="text-message-player.html"
+					style="border: none; border-radius: 10px; width: 100%; height: 100%;">
+				  </iframe>
+				</div>
+				<div class="vocab-card vocab-iframe-card" style="border: none; min-height: 1100px;">
+				  <iframe
+                    src="instagram-post-player.html"
+                    style="border: none; border-radius: 10px; width: 100%; height: 100%;">
+                  </iframe>
+				</div>
+				<div class="vocab-card vocab-iframe-card reading-popup-card">
+				  <iframe
+					src="email-player.html"
+					class="reading-email-iframe"
+					style="border: none; border-radius: 10px; width: 100%; height: 100%;">
+				  </iframe>
+				</div>
+			  </div>
+			</div>
+		  
+			<!-- Practice -->
+			<div id="practiceContent" style="display: none;">
+			  <div class="practice-help-float" id="practiceHelpFloat">
+				<div class="practice-help-question">?</div>
+			  </div>
+
+			  <div class="card-container">
+				<div class="vocab-card active practice-card">
+				  <iframe src="ruleta/ruleta/ruleta.html" style="border: none; border-radius: 10px; width: 100%; height: 100%;"></iframe>
+				</div>
+			  </div>
+			</div>
+
+			<!-- COLOR CHART -->
+			<div id="colorChartContent" style="display: none;">
+			  <div class="card-container">
+
+				<!-- Donde se acumulan los íconos seleccionados -->
+				  <div class="colorChartMain">
+				<div class="selected-icons" id="selectedIcons"></div>
+				  <div class="delete-icons">
+					<button id="clearIconsBtn" title="Clear all">
+					  <i class="material-icons">delete</i>
+					</button>
+					<button id="enterLineBtn" title="New line">
+						<i class="material-icons">keyboard_return</i>
+					  </button>
+					    <button id="toggleSoundBtn" class="sound-active" title="Sound On/Off">
+						<i class="material-icons">volume_up</i>
+					  </button>
+				  </div>
+				<!-- Color Chart Box (bottom-right) -->
+				<div class="color-chart-box" id="colorChartBox">
+				  <!-- Fila 1: 1-7 -->
+				  <div class="chart-row">
+					<img src="CC/CC-01.png" class="chart-icon" data-sound="1">
+					<img src="CC/CC-02.png" class="chart-icon" data-sound="2">
+					<img src="CC/CC-03.png" class="chart-icon" data-sound="3">
+					<img src="CC/CC-04.png" class="chart-icon" data-sound="4">
+					<img src="CC/CC-05.png" class="chart-icon" data-sound="5">
+					<img src="CC/CC-06.png" class="chart-icon" data-sound="6">
+					<img src="CC/CC-07.png" class="chart-icon" data-sound="7">
+				  </div>
+
+				  <!-- Fila 2: 8-14 -->
+				  <div class="chart-row">
+					<img src="CC/CC-08.png" class="chart-icon" data-sound="8">
+					<img src="CC/CC-09.png" class="chart-icon" data-sound="9">
+					<img src="CC/CC-10.png" class="chart-icon" data-sound="10">
+					<img src="CC/CC-11.png" class="chart-icon" data-sound="11">
+					<img src="CC/CC-12.png" class="chart-icon" data-sound="12">
+					<img src="CC/CC-13.png" class="chart-icon" data-sound="13">
+					<img src="CC/CC-14.png" class="chart-icon" data-sound="14">
+				  </div>
+
+				  <!-- Fila 3: 15-19 -->
+				  <div class="chart-row">
+					<img src="CC/CC-15.png" class="chart-icon" data-sound="15">
+					<img src="CC/CC-16.png" class="chart-icon" data-sound="16">
+					<img src="CC/CC-17.png" class="chart-icon" data-sound="17">
+					<img src="CC/CC-18.png" class="chart-icon" data-sound="18">
+					<img src="CC/CC-19.png" class="chart-icon" data-sound="19">
+				  </div>
+
+				  <!-- Fila 4: 20-23 -->
+				  <div class="chart-row">
+					<img src="CC/CC-20.png" class="chart-icon" data-sound="20">
+					<img src="CC/CC-21.png" class="chart-icon" data-sound="21">
+					<img src="CC/CC-22.png" class="chart-icon" data-sound="22">
+					<img src="CC/CC-23.png" class="chart-icon" data-sound="23">
+				  </div>
+
+				  <!-- Fila 5+: 24-58 en bloques de 7 -->
+				  <div class="chart-row">
+					<img src="CC/CC-24.png" class="chart-icon" data-sound="24">
+					<img src="CC/CC-25.png" class="chart-icon" data-sound="25">
+					<img src="CC/CC-26.png" class="chart-icon" data-sound="26">
+					<img src="CC/CC-27.png" class="chart-icon" data-sound="27">
+					<img src="CC/CC-28.png" class="chart-icon" data-sound="28">
+					<img src="CC/CC-29.png" class="chart-icon" data-sound="29">
+					<img src="CC/CC-30.png" class="chart-icon" data-sound="30">
+				  </div>
+				  <div class="chart-row">
+					<img src="CC/CC-31.png" class="chart-icon" data-sound="31">
+					<img src="CC/CC-32.png" class="chart-icon" data-sound="32">
+					<img src="CC/CC-33.png" class="chart-icon" data-sound="33">
+					<img src="CC/CC-34.png" class="chart-icon" data-sound="34">
+					<img src="CC/CC-35.png" class="chart-icon" data-sound="35">
+					<img src="CC/CC-36.png" class="chart-icon" data-sound="36">
+					<img src="CC/CC-37.png" class="chart-icon" data-sound="37">
+				  </div>
+				  <div class="chart-row">
+					<img src="CC/CC-38.png" class="chart-icon" data-sound="38">
+					<img src="CC/CC-39.png" class="chart-icon" data-sound="39">
+					<img src="CC/CC-40.png" class="chart-icon" data-sound="40">
+					<img src="CC/CC-41.png" class="chart-icon" data-sound="41">
+					<img src="CC/CC-42.png" class="chart-icon" data-sound="42">
+					<img src="CC/CC-43.png" class="chart-icon" data-sound="43">
+					<img src="CC/CC-44.png" class="chart-icon" data-sound="44">
+				  </div>
+				  <div class="chart-row">
+					<img src="CC/CC-45.png" class="chart-icon" data-sound="45">
+					<img src="CC/CC-46.png" class="chart-icon" data-sound="46">
+					<img src="CC/CC-47.png" class="chart-icon" data-sound="47">
+					<img src="CC/CC-48.png" class="chart-icon" data-sound="48">
+					<img src="CC/CC-49.png" class="chart-icon" data-sound="49">
+					<img src="CC/CC-50.png" class="chart-icon" data-sound="50">
+					<img src="CC/CC-51.png" class="chart-icon" data-sound="51">
+				  </div>
+				  <div class="chart-row">
+					<img src="CC/CC-52.png" class="chart-icon" data-sound="52">
+					<img src="CC/CC-53.png" class="chart-icon" data-sound="53">
+					<img src="CC/CC-54.png" class="chart-icon" data-sound="54">
+					<img src="CC/CC-55.png" class="chart-icon" data-sound="55">
+					<img src="CC/CC-56.png" class="chart-icon" data-sound="56">
+					<img src="CC/CC-57.png" class="chart-icon" data-sound="57">
+					<img src="CC/CC-58.png" class="chart-icon" data-sound="58">
+				  </div>
+				</div>
+
+				</div>
+			  </div>
+			</div>
+		  
+		 	<!-- Whiteboard Section -->
+			<div id="whiteboardContent" style="display: none; width: 100%; height: 100%;">
+			  <div class="whiteboard-toolbar">
+				<label for="colorPicker">Color:</label>
+				<input type="color" id="colorPicker" value="#000000">
+
+				<label for="brushSize">Brush size:</label>
+				<input type="range" id="brushSize" min="1" max="20" value="5">
+
+				<button id="clearBoard">Clear</button>
+			  </div>
+
+			  <canvas id="whiteboardCanvas"></canvas>
+			</div>
+
+			<!-- Challenge -->
+			<div id="studentContent" style="display: none;">
+			  <div class="card-container">
+				<div class="vocab-card active">
+				  <iframe src="challenge.html" width="1000px" height="1000px" style="border: none; border-radius: 10px;"></iframe>
+				</div>
+			  </div>
+			</div>
+		  
+			<!-- Arrows -->
+			<div class="arrows">
+			  <button class="arrow up"><i class="material-icons">keyboard_arrow_up</i></button>
+			  <button class="arrow down"><i class="material-icons">keyboard_arrow_down</i></button>
+			</div>
+      </div>
+    </main>
+
+	<!-- Breadcrumb + Logout -->
+	<div class="top-right-container">
+		<a href="../../index.html" class="breadcrumb-link">
+		  <div class="breadcrumb">
+			<i class="fa-solid fa-house"></i>
+			<span>&gt; Level 5 &gt; Lesson 1</span>
+		  </div>
+		</a>
+	  <button class="logout" onclick="window.location.href='../../login.html'">
+	  <i class="fa-solid fa-right-from-bracket"></i> Logout
+	</button>
+	</div>
+  </div>
+
+
+	<!-- POPUP FULLSCREEN -->
+	<div class="practice-popup-overlay" id="practicePopupOverlay">
+	  <div class="practice-popup-box">
+		  <img src="Practices/images/iconte.png" alt="Teacher icon" class="practice-popup-icon">
+		<button class="practice-popup-close" id="practicePopupClose">&times;</button>
+
+		<div class="practice-popup-title" style="text-align: center; margin-right: 10px;">Directions</div>
+
+		<div class="practice-popup-text">
+		  Drag the word blocks into the correct order to build each sentence.
+		</div>
+
+		<img
+		  src="Practices/images/directions.png"
+		  alt="Directions"
+		  class="practice-popup-image"
+		>
+
+		<div class="practice-popup-text-bottom">
+		  Keep going until your build comes to life!
+		</div>
+	  </div>
+	</div>
+	
+	<!-- MAKE POPUP -->
+	<div class="make-popup-overlay" id="makePopupOverlay">
+	<div class="make-popup-box">
+
+		<button class="make-popup-close" onclick="closeMakePopup()">&times;</button>
+
+		<div class="make-popup-left">
+		  <img src="images/iconte.png" class="make-popup-icon">
+		</div>
+
+		<div class="make-popup-right">
+
+		<div class="make-popup-title">Say it right!</div>
+
+		<div class="make-popup-row">
+		  <span>The letter “a” sounds like</span>
+		  <img src="images/CC-16.png" class="make-popup-cc-inline">
+		  <span>when the word ends with:</span>
+		</div>
+
+		<div class="make-popup-rule">
+		  letter “a” + consonant + letter “e”
+		</div>
+
+		<div class="make-popup-explanation">
+		  And when that happens, we don’t pronounce the letter “e”. In this case, “e” is a silent letter.
+		</div>
+
+		<img src="images/make2.png" class="make-popup-image">
+	  </div></div>
+	</div>
+	<audio id="popupOpenSound" src="Practices/audios/boton.wav" preload="auto"></audio>
+	<audio id="popupCloseSound" src="Practices/audios/cerrar.wav" preload="auto"></audio>
+	<div id="readingGlobalOverlay"></div>
+
+	<div id="readingGlobalPopup" aria-hidden="true">
+	  <button id="readingGlobalPopupClose" type="button" aria-label="Close popup">×</button>
+	  <iframe id="readingGlobalPopupFrame" title="Word pronunciation"></iframe>
+	</div>
+	<script>
+	function setupStackedCircles() {
+	  // Recorre cada bloque de círculos por separado
+	  document.querySelectorAll('.vocab-card .group-left').forEach(container => {
+		const circles = Array.from(container.querySelectorAll('.circle'));
+		const groups = {};
+
+		// Agrupa SOLO dentro de este container por el mismo data-reveal con coma
+		circles.forEach(el => {
+		  const key = (el.dataset.reveal || '').replace(/\s+/g,'');
+		  if (key.includes(',')) (groups[key] ||= []).push(el);
+		});
+
+		// Aplica stacking dentro de este container
+		Object.values(groups).forEach(arr => {
+		  // limpia estilos previos
+		  arr.forEach(c => {
+			c.classList.remove('stack-front','stack-back');
+			c.style.marginRight = '';
+			c.style.marginLeft  = '';
+			c.style.zIndex      = '';
+		  });
+
+		  if (arr.length >= 2) {
+			// primero al frente
+			arr[0].classList.add('stack-front');
+
+			// siguientes atrás y empalmados
+			arr.slice(1).forEach((el, i) => {
+			  el.classList.add('stack-back');
+			  // usa el MISMO valor que en tu CSS (.stack-back { margin-left: -40px; })
+			  el.style.marginLeft = '-60px';
+			  el.style.zIndex = String(10 - i);
+			});
+
+			// deja el espacio normal después del último del grupo
+			const last = arr[arr.length - 1];
+			last.style.marginRight = '10px'; // ajusta si tu gap es otro
+		  }
+		});
+	  });
+	}
+
+	document.addEventListener('DOMContentLoaded', setupStackedCircles);
+	// si cambias dinámicamente el contenido, vuelve a llamar setupStackedCircles();
+  
+  function startGame() {
+    if (typeof fadeOutIntroSound === "function") {
+      fadeOutIntroSound();
+    }
+
+    const screen = document.getElementById("startScreen");
+
+    screen.style.transition = "opacity 0.6s ease";
+    screen.style.opacity = "0";
+
+    setTimeout(() => {
+      screen.style.display = "none";
+    }, 600);
+  }
+	</script>
+	<script>
+		function playPopupSound(id) {
+		  const sound = document.getElementById(id);
+		  if (!sound) return;
+		  sound.currentTime = 0;
+		  sound.play().catch(() => {});
+		}
+
+		const practiceHelpFloat = document.getElementById("practiceHelpFloat");
+		const practicePopupOverlay = document.getElementById("practicePopupOverlay");
+		const practicePopupClose = document.getElementById("practicePopupClose");
+
+		practiceHelpFloat.addEventListener("click", () => {
+		  playPopupSound("popupOpenSound");
+		  practicePopupOverlay.classList.add("active");
+		});
+
+		practicePopupClose.addEventListener("click", () => {
+		  playPopupSound("popupCloseSound");
+		  practicePopupOverlay.classList.remove("active");
+		});
+	</script>
+	<script>
+		window.addEventListener("message", (event) => {
+		  if (event.data && event.data.type === "practiceStarted") {
+			const helpBtn = document.getElementById("practiceHelpFloat");
+			const practiceContent = document.getElementById("practiceContent");
+
+			if (helpBtn && practiceContent && practiceContent.style.display === "block") {
+			  helpBtn.style.display = "flex";
+			}
+		  }
+		});
+	</script>
+	<script>
+		practicePopupOverlay.addEventListener("click", (e) => {
+		  if (e.target === practicePopupOverlay) {
+			playPopupSound("popupCloseSound");
+			practicePopupOverlay.classList.remove("active");
+		  }
+		});
+	</script>
+	<script>
+		function openMakePopup() {
+		  document.getElementById("makePopupOverlay").classList.add("active");
+		}
+
+		function closeMakePopup() {
+		  document.getElementById("makePopupOverlay").classList.remove("active");
+		}
+	</script>
+	<script>
+		const makePopupOverlay = document.getElementById("makePopupOverlay");
+
+		makePopupOverlay.addEventListener("click", (e) => {
+		  if (e.target === makePopupOverlay) {
+			closeMakePopup();
+		  }
+		});
+	</script>
+	<script src="scripts.js"></script>
+	<script src="whiteboard.js"></script>
+	<script src="colorchart.js"></script>
+	<script src="scripts.js"></script>
+	<script src="whiteboard.js"></script>
+	<script src="colorchart.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+		  const targetSection = document.getElementById('vocabularyContent');
+		  const targetVideo = document.querySelector('#vocabularyContent .target-video');
+
+		  if (!targetSection || !targetVideo) return;
+
+		  function detenerVideoTarget() {
+			const targetEstaOculto =
+			  window.getComputedStyle(targetSection).display === 'none';
+
+			if (targetEstaOculto) {
+			  targetVideo.pause();
+			  targetVideo.currentTime = 0;
+			}
+		  }
+
+		  const observer = new MutationObserver(function () {
+			detenerVideoTarget();
+		  });
+
+		  observer.observe(targetSection, {
+			attributes: true,
+			attributeFilter: ['style', 'class']
+		  });
+		});
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+		  const readingSection = document.getElementById('readingContent');
+
+		  if (!readingSection) return;
+
+		  function detenerAudiosReading() {
+			const readingEstaOculto =
+			  window.getComputedStyle(readingSection).display === 'none';
+
+			if (!readingEstaOculto) return;
+
+			const readingFrames = readingSection.querySelectorAll('iframe');
+
+			readingFrames.forEach(function (iframe) {
+			  const rutaActual = iframe.getAttribute('src');
+
+			  if (rutaActual) {
+				iframe.setAttribute('src', rutaActual);
+			  }
+			});
+		  }
+
+		  const readingObserver = new MutationObserver(function () {
+			detenerAudiosReading();
+		  });
+
+		  readingObserver.observe(readingSection, {
+			attributes: true,
+			attributeFilter: ['style', 'class']
+		  });
+		});
+	</script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+		  const readingGlobalOverlay = document.getElementById('readingGlobalOverlay');
+		  const readingGlobalPopup = document.getElementById('readingGlobalPopup');
+		  const readingGlobalPopupFrame = document.getElementById('readingGlobalPopupFrame');
+		  const readingGlobalPopupClose = document.getElementById('readingGlobalPopupClose');
+		  const readingIframes = Array.from(
+			  document.querySelectorAll('#readingContent iframe')
+			);
+
+		  function openReadingGlobalPopup(file) {
+			if (!file) return;
+
+			readingGlobalPopupFrame.src = file;
+			readingGlobalOverlay.classList.add('is-visible');
+			readingGlobalPopup.classList.add('is-visible');
+			readingGlobalPopup.setAttribute('aria-hidden', 'false');
+			document.body.classList.add('reading-word-popup-open');
+		  }
+
+		function closeReadingGlobalPopup() {
+		  readingGlobalOverlay.classList.remove('is-visible');
+		  readingGlobalPopup.classList.remove('is-visible');
+		  readingGlobalPopup.setAttribute('aria-hidden', 'true');
+		  readingGlobalPopupFrame.src = '';
+		  readingGlobalPopupClose.classList.remove('is-hidden');
+		  document.body.classList.remove('reading-word-popup-open');
+		}
+
+		window.addEventListener('message', function (event) {
+		  const messageType =
+			typeof event.data === 'string'
+			  ? event.data
+			  : event.data && event.data.type;
+
+		  const messageFile =
+			event.data && typeof event.data === 'object'
+			  ? event.data.file
+			  : '';
+
+		  /*
+			Abrir el popup de una palabra desde cualquiera
+			de los iframes de Reading.
+		  */
+		  if (messageType === 'email-popup-open') {
+			openReadingGlobalPopup(messageFile);
+			return;
+		  }
+
+		  /*
+			Cerrar el popup principal de una palabra.
+		  */
+		  if (messageType === 'email-popup-close') {
+			closeReadingGlobalPopup();
+			return;
+		  }
+
+		  /*
+			Cuando se abre la imagen dentro de items.html,
+			ocultar la X exterior.
+		  */
+		  if (messageType === 'library-image-open') {
+			readingGlobalPopupClose.classList.add('is-hidden');
+			return;
+		  }
+
+		  /*
+			Cuando se cierra la imagen, volver a mostrar
+			la X exterior.
+		  */
+		  if (messageType === 'library-image-close') {
+			readingGlobalPopupClose.classList.remove('is-hidden');
+		  }
+		});
+
+		readingGlobalOverlay.addEventListener('click', closeReadingGlobalPopup);
+
+		readingGlobalPopupClose.addEventListener('click', closeReadingGlobalPopup);
+
+		document.addEventListener('keydown', function (event) {
+		  if (event.key === 'Escape' &&
+			  readingGlobalPopup.classList.contains('is-visible')) {
+			closeReadingGlobalPopup();
+		  }
+		});
+
+		});
+	</script>
+</body>
+</html>

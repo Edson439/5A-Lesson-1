@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Message</title>
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      min-height: 100%;
+    }
+
+    body {
+      padding: 28px 34px;
+      background: #ffffff;
+      color: #151515;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .message-player {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .message-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 24px 22px;
+      color: #555;
+      font-size: 18px;
+    }
+
+    .message-card {
+      width: 100%;
+      padding: 30px 34px 28px;
+      border: 2px solid #d8d8d8;
+      border-radius: 0px 24px 24px 24px;
+      background: #f7f7f7;
+    }
+
+    .sender-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 44px;
+    }
+
+    .profile-avatar {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .18);
+    }
+
+    .avatar-fallback {
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
+      display: none;
+      place-items: center;
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #284b8f, #6f9be8);
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .sender-name {
+      color: #2f70dc;
+      font-size: clamp(23px, 2.5vw, 34px);
+      font-weight: 700;
+    }
+
+    .message-body {
+      font-size: clamp(28px, 3.25vw, 48px);
+      line-height: 1.38;
+      letter-spacing: -.35px;
+    }
+
+    .message-body p {
+      margin: 0 0 38px;
+    }
+
+    .spoken-word {
+      display: inline;
+      padding: 0 .055em;
+      margin: 0 -.055em;
+      border-radius: 7px;
+      transition:
+        background-color .07s linear,
+        color .07s linear;
+    }
+
+    .spoken-word.blue-word {
+      color: #2f70dc;
+      font-weight: 600;
+    }
+
+    .spoken-word.is-current {
+      color: #fff !important;
+      background: #3f7de0;
+      box-shadow: 0 0 0 2px rgba(63, 125, 224, .08);
+    }
+
+    .spoken-word.is-read:not(.is-current) {
+      color: #111;
+    }
+
+    .spoken-word.blue-word.is-read:not(.is-current) {
+      color: #2f70dc;
+    }
+
+    .spoken-word.clickable-word {
+      cursor: pointer;
+    }
+
+    .spoken-word.clickable-word:hover {
+      color: #ef4444 !important;
+      background: #fdeaea;
+      text-decoration: underline;
+      text-decoration-color: #ef4444;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 4px;
+    }
+
+    .audio-player {
+      display: grid;
+      grid-template-columns: 68px 1fr auto;
+      align-items: center;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .play-button {
+      width: 62px;
+      height: 62px;
+      display: grid;
+      place-items: center;
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      background: #3977df;
+      cursor: pointer;
+      box-shadow: 0 2px 7px rgba(44, 103, 198, .28);
+      font-size: 27px;
+      line-height: 1;
+    }
+
+    .play-button:hover {
+      transform: scale(1.04);
+    }
+
+    .play-button:active {
+      transform: scale(.98);
+    }
+
+    .play-button i {
+      pointer-events: none;
+    }
+
+    .progress-wrap {
+      height: 34px;
+      display: flex;
+      align-items: center;
+    }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 999px;
+      cursor: pointer;
+      outline: none;
+      background:
+        linear-gradient(
+          to right,
+          #3977df 0%,
+          #3977df 0%,
+          #e9eef8 0%,
+          #e9eef8 100%
+        );
+    }
+
+    .progress::-webkit-slider-thumb {
+      width: 22px;
+      height: 22px;
+      appearance: none;
+      -webkit-appearance: none;
+      border: none;
+      border-radius: 50%;
+      background: #3977df;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .22);
+    }
+
+    .progress::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border: none;
+      border-radius: 50%;
+      background: #3977df;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .22);
+    }
+
+    .time {
+      min-width: 84px;
+      color: #667085;
+      font-size: 16px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .error-message {
+      display: none;
+      margin: 14px 0 0 84px;
+      color: #b42318;
+      font-size: 15px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 18px 14px;
+      }
+
+      .message-topbar {
+        margin-inline: 10px;
+      }
+
+      .message-card {
+        padding: 24px 20px;
+        border-radius: 18px;
+      }
+
+      .sender-row {
+        margin-bottom: 30px;
+      }
+
+      .profile-avatar,
+      .avatar-fallback {
+        width: 50px;
+        height: 50px;
+        flex-basis: 50px;
+      }
+
+      .message-body p {
+        margin-bottom: 28px;
+      }
+
+      .audio-player {
+        grid-template-columns: 58px 1fr;
+        gap: 12px;
+      }
+
+      .play-button {
+        width: 54px;
+        height: 54px;
+        font-size: 24px;
+      }
+
+      .time {
+        grid-column: 2;
+        min-width: 0;
+        margin-top: -8px;
+        text-align: left;
+      }
+
+      .error-message {
+        margin-left: 70px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="message-player">
+
+    <div class="message-topbar">
+      <span>New Message</span>
+      <span id="messageTime">15:45</span>
+    </div>
+
+    <section class="message-card">
+
+      <div class="sender-row">
+        <img
+          src="images/martin-smith.png"
+          alt="Martin Smith"
+          class="profile-avatar"
+          onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='grid';"
+        >
+
+        <div class="avatar-fallback" id="avatarFallback">JW</div>
+
+        <span class="sender-name">Martin Smith</span>
+      </div>
+
+      <div class="message-body" aria-label="Text message">
+        <p data-speech="Dad! Guess what?"></p>
+
+		<p
+		  data-speech="I made the city soccer team!! We have practice every Tuesday and Thursday after work. I'm really excited, but I'm also a little nervous."
+		  data-blue="made">
+		</p>
+
+		<p data-speech="Can you come to my first game next weekend?"></p>
+      </div>
+
+      <div class="audio-player">
+        <button
+          class="play-button"
+          id="playButton"
+          type="button"
+          aria-label="Play audio">
+          <i class="fa-solid fa-play"></i>
+        </button>
+
+        <div class="progress-wrap">
+          <input
+            class="progress"
+            id="progress"
+            type="range"
+            min="0"
+            max="1000"
+            value="0"
+            aria-label="Audio progress">
+        </div>
+
+        <div class="time" id="timeLabel">0:00 / 0:00</div>
+      </div>
+
+      <p class="error-message" id="errorMessage">
+        No se encontró el audio. Verifica que exista en:
+        audios/text-message-audio.mp3
+      </p>
+
+      <audio
+        id="audio"
+        src="audios/text-message-audio.mp3"
+        preload="metadata">
+      </audio>
+
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const messageTime = document.getElementById('messageTime');
+
+      function setRandomMessageTime() {
+        if (!messageTime) return;
+
+        // Hora aleatoria entre 7:00 y 21:00.
+        const hour = Math.floor(Math.random() * 15) + 7;
+
+        // Minutos aleatorios en intervalos de 5 minutos.
+        const minuteOptions = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+        const minute =
+          minuteOptions[Math.floor(Math.random() * minuteOptions.length)];
+
+        messageTime.textContent =
+          String(hour).padStart(2, '0') +
+          ':' +
+          String(minute).padStart(2, '0');
+      }
+
+      setRandomMessageTime();
+
+      const audio = document.getElementById('audio');
+      const playButton = document.getElementById('playButton');
+      const progress = document.getElementById('progress');
+      const timeLabel = document.getElementById('timeLabel');
+      const errorMessage = document.getElementById('errorMessage');
+      const paragraphs = Array.from(
+        document.querySelectorAll('[data-speech]')
+      );
+
+      const words = [];
+      let timeline = [];
+      let isDragging = false;
+      let animationFrameId = null;
+
+      paragraphs.forEach(function (paragraph) {
+        const sentence = paragraph.dataset.speech.trim();
+
+        const blueWords = (paragraph.dataset.blue || '')
+          .toLowerCase()
+          .split(',')
+          .map(function (word) {
+            return word.trim();
+          })
+          .filter(Boolean);
+
+        const tokens = sentence.match(/\S+/g) || [];
+
+        tokens.forEach(function (token, index) {
+          const span = document.createElement('span');
+          span.className = 'spoken-word';
+          span.textContent = token;
+
+          const cleanToken = token
+            .toLowerCase()
+            .replace(/[^a-z0-9']/g, '');
+
+          if (blueWords.includes(cleanToken)) {
+            span.classList.add('blue-word');
+          }
+
+          const nonClickableWords = [
+            'martin',
+            'smith'
+          ];
+
+          if (
+            cleanToken &&
+            !nonClickableWords.includes(cleanToken)
+          ) {
+            span.classList.add('clickable-word');
+            span.dataset.popup =
+              'colorchart/' + cleanToken + '.html';
+
+            span.setAttribute('role', 'button');
+            span.setAttribute('tabindex', '0');
+            span.setAttribute(
+              'aria-label',
+              'Open ' + cleanToken
+            );
+          }
+
+          paragraph.appendChild(span);
+
+          words.push({
+            element: span,
+            token: token
+          });
+
+          if (index < tokens.length - 1) {
+            paragraph.appendChild(
+              document.createTextNode(' ')
+            );
+          }
+        });
+      });
+
+      function openWordPopup(file) {
+        if (!file) return;
+
+        window.parent.postMessage({
+          type: 'email-popup-open',
+          file: file
+        }, '*');
+      }
+
+      document
+        .querySelectorAll('.spoken-word[data-popup]')
+        .forEach(function (word) {
+          word.addEventListener('click', function () {
+            openWordPopup(word.dataset.popup);
+          });
+
+          word.addEventListener('keydown', function (event) {
+            if (
+              event.key === 'Enter' ||
+              event.key === ' '
+            ) {
+              event.preventDefault();
+              openWordPopup(word.dataset.popup);
+            }
+          });
+        });
+
+      /*
+        TIEMPOS DE INICIO DE CADA PALABRA.
+
+        Son tiempos iniciales de ejemplo.
+        Debes cambiarlos para que coincidan exactamente
+        con tu audio real.
+      */
+	const wordStartTimes = [
+	  0.12, // Dad!
+	  0.86, // Guess
+	  1.09, // what?
+
+	  1.93, // I
+	  1.98, // made
+	  2.21, // the
+	  2.30, // city
+	  2.59, // soccer
+	  3.03, // team!!
+
+	  3.91, // We
+	  4.01, // have
+	  4.17, // practice
+	  4.57, // every
+	  4.85, // Tuesday
+	  5.29, // and
+	  5.48, // Thursday
+	  5.84, // after
+	  6.10, // work.
+
+	  6.97, // I'm
+	  7.16, // really
+	  7.40, // excited,
+	  7.94, // but
+	  8.25, // I'm
+	  8.42, // also
+	  8.67, // a
+	  8.75, // little
+	  8.95, // nervous.
+
+	  10.13, // Can
+	  10.26, // you
+	  10.40, // come
+	  10.63, // to
+	  10.69, // my
+	  10.83, // first
+	  11.16, // game
+	  11.40, // next
+	  11.60  // weekend?
+	];
+
+      function buildTimeline() {
+        const duration = audio.duration;
+
+        if (
+          !Number.isFinite(duration) ||
+          duration <= 0 ||
+          words.length === 0
+        ) {
+          return;
+        }
+
+        timeline = words.map(function (item, index) {
+          const start =
+			  wordStartTimes[index] ??
+			  duration + index;
+
+          const end =
+            index < wordStartTimes.length - 1
+              ? wordStartTimes[index + 1]
+              : duration;
+
+          return {
+            element: item.element,
+            start: start,
+            end: end
+          };
+        });
+      }
+
+      function updateHighlight(time) {
+        for (let i = 0; i < timeline.length; i++) {
+          const item = timeline[i];
+
+          const isCurrent =
+            time >= item.start &&
+            time < item.end;
+
+          item.element.classList.toggle(
+            'is-current',
+            isCurrent
+          );
+
+          item.element.classList.toggle(
+            'is-read',
+            time >= item.end
+          );
+        }
+
+        if (
+          audio.ended ||
+          (
+            Number.isFinite(audio.duration) &&
+            time >= audio.duration
+          )
+        ) {
+          timeline.forEach(function (item) {
+            item.element.classList.remove('is-current');
+            item.element.classList.add('is-read');
+          });
+        }
+      }
+
+      function formatTime(seconds) {
+        if (!Number.isFinite(seconds)) {
+          return '0:00';
+        }
+
+        const minutes = Math.floor(seconds / 60);
+
+        const remaining = Math
+          .floor(seconds % 60)
+          .toString()
+          .padStart(2, '0');
+
+        return minutes + ':' + remaining;
+      }
+
+      function paintProgress(percent) {
+        const safePercent = Math.max(
+          0,
+          Math.min(100, percent)
+        );
+
+        progress.style.background =
+          'linear-gradient(to right,' +
+          ' #3977df 0%,' +
+          ' #3977df ' + safePercent + '%,' +
+          ' #e9eef8 ' + safePercent + '%,' +
+          ' #e9eef8 100%)';
+      }
+
+      function updateInterface() {
+        const duration =
+          Number.isFinite(audio.duration)
+            ? audio.duration
+            : 0;
+
+        const percent =
+          duration > 0
+            ? (audio.currentTime / duration) * 100
+            : 0;
+
+        if (!isDragging) {
+          progress.value =
+            Math.round(percent * 10);
+        }
+
+        paintProgress(
+          isDragging
+            ? Number(progress.value) / 10
+            : percent
+        );
+
+        timeLabel.textContent =
+          formatTime(audio.currentTime) +
+          ' / ' +
+          formatTime(duration);
+
+        updateHighlight(audio.currentTime);
+      }
+
+      function animationLoop() {
+        updateInterface();
+
+        if (!audio.paused && !audio.ended) {
+          animationFrameId =
+            requestAnimationFrame(animationLoop);
+        }
+      }
+
+      playButton.addEventListener('click', function () {
+        if (audio.paused) {
+          audio.play().catch(function () {
+            errorMessage.style.display = 'block';
+          });
+        } else {
+          audio.pause();
+        }
+      });
+
+      progress.addEventListener('input', function () {
+        isDragging = true;
+
+        const duration =
+          Number.isFinite(audio.duration)
+            ? audio.duration
+            : 0;
+
+        const chosenTime =
+          duration *
+          (Number(progress.value) / 1000);
+
+        audio.currentTime = chosenTime;
+
+        paintProgress(
+          Number(progress.value) / 10
+        );
+
+        timeLabel.textContent =
+          formatTime(chosenTime) +
+          ' / ' +
+          formatTime(duration);
+
+        updateHighlight(chosenTime);
+      });
+
+      progress.addEventListener('change', function () {
+        isDragging = false;
+        updateInterface();
+      });
+
+      audio.addEventListener(
+        'loadedmetadata',
+        function () {
+          errorMessage.style.display = 'none';
+          buildTimeline();
+          updateInterface();
+        }
+      );
+
+      audio.addEventListener(
+        'durationchange',
+        buildTimeline
+      );
+
+      audio.addEventListener(
+        'seeking',
+        updateInterface
+      );
+
+      audio.addEventListener(
+        'seeked',
+        updateInterface
+      );
+
+      audio.addEventListener('play', function () {
+        playButton.innerHTML =
+          '<i class="fa-solid fa-pause"></i>';
+
+        playButton.setAttribute(
+          'aria-label',
+          'Pause audio'
+        );
+
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+
+        animationLoop();
+      });
+
+      audio.addEventListener('pause', function () {
+        playButton.innerHTML =
+          '<i class="fa-solid fa-play"></i>';
+
+        playButton.setAttribute(
+          'aria-label',
+          'Play audio'
+        );
+
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+
+        updateInterface();
+      });
+
+      audio.addEventListener('ended', function () {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+
+        updateInterface();
+      });
+
+      audio.addEventListener('error', function () {
+        errorMessage.style.display = 'block';
+      });
+
+      updateInterface();
+    });
+  </script>
+</body>
+</html>

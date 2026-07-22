@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Written Challenge</title>
+
+  <style>
+   * {
+      box-sizing: border-box;
+	  margin: 0;
+  	  padding: 0;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      color: #222;
+    }
+
+	.screen {
+	  display: none;
+	  width: 100%;
+	  max-width: 1300px;
+	  text-align: center;
+	}
+
+    .active {
+      display: block;
+    }
+
+	.card {
+	  background: #ffffff;
+	  border-radius: 24px;
+	  padding: 38px 42px 44px 42px;
+
+	}
+
+    h1 {
+      margin: 0 0 12px 0;
+      color: #007bff;
+      font-size: 26px;
+    }
+
+    h2 {
+      margin: 0 0 16px 0;
+      color: #007bff;
+      font-size: 26px;
+    }
+
+    .intro-emoji {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    .intro-text {
+      font-size: 22px;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .instructions {
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    .progress-container {
+      width: 100%;
+      background-color: #e6f0ff;
+      height: 12px;
+      border-radius: 999px;
+      margin: 18px 0 10px 0;
+      overflow: hidden;
+    }
+
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background-color: #007bff;
+      transition: width 0.35s ease;
+    }
+
+.progress-count {
+  font-size: 16px;
+  margin-bottom: 18px;
+  color: #444;
+}
+
+/* Texto que corresponde a cada grupo de preguntas */
+.reading-text-box {
+  width: 100%;
+  background: #eaf4ff;
+  border: 2px solid #d2e8ff;
+  border-radius: 14px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+  font-size: 21px;
+  line-height: 1.5;
+  color: #222;
+  text-align: left;
+}
+
+	.question-text {
+	  font-size: 26px;
+	  line-height: 1.2;
+	  text-align: left;
+	  margin-bottom: 34px;
+	  font-weight: 300;
+	}
+
+	.options {
+	  display: flex;
+	  flex-direction: column;
+	  gap: 22px;
+	  margin-top: 0;
+	}
+
+.option-btn {
+  width: 84%;
+  min-height: 56px;
+  background: white;
+  border: 2px solid #e6f0ff;
+  border-radius: 12px;
+  padding: 24px 30px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  color: #222;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: left;
+}
+.option-letter {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 50%;
+  background: #e6f0ff;
+  color: #007bff;
+  font-weight: 300;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+  flex: 0 0 auto;
+}
+
+.option-text {
+  flex: 1;
+  font-size: 26px;
+  line-height: 1.25;
+  color: #222;
+}
+.option-btn:hover {
+  transform: scale(1.02);
+  background: #e6f0ff;
+  box-shadow: 0 0 0 3px rgba(230, 240, 255, 0.35);
+}
+
+    .option-btn.correct {
+      border-color: #1f9d55;
+      background: #eaf8f0;
+      color: #0f6b38;
+    }
+
+    .option-btn.wrong {
+      border-color: #d93025;
+      background: #fdecea;
+      color: #a1261c;
+    }
+
+    .option-btn.dimmed {
+      opacity: 0.45;
+    }
+
+    .feedback-box {
+      margin-top: -24px;
+      min-height: 54px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .feedback-correct {
+      color: #15803d;
+    }
+
+    .feedback-wrong {
+      color: #c62828;
+    }
+
+    button.main-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 14px 26px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.25s ease;
+    }
+
+    button.main-btn:hover {
+      background: #1976d2;
+      transform: scale(1.04);
+    }
+
+    .score {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 18px 0;
+    }
+
+    #resultMessage {
+      margin: 20px 0 26px 0;
+      font-size: 21px;
+      line-height: 1.5;
+    }
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+}
+
+	  
+.option-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.feedback-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  text-align: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.feedback-label .emoji {
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.feedback-label .text {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+	  
+	  
+    @media (max-width: 768px) {
+      .card {
+        padding: 24px 18px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      .intro-text,
+      .instructions {
+        font-size: 18px;
+      }
+
+      .question-text {
+        font-size: 26px;
+      }
+
+      .option-btn {
+        font-size: 23px;
+        padding: 16px 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+      }
+
+      .question-text {
+        font-size: 26px;
+      }
+
+      .option-btn {
+        font-size: 20px;
+      }
+
+      .feedback-box {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Pantalla de inicio -->
+  <div id="startScreen" class="screen active">
+    <div class="card">
+      <div class="intro-emoji">😃📝</div>
+      <h1>Ready for today’s challenge?</h1>
+      <div class="intro-text">
+        Read each text carefully and choose the correct answer for each question.
+      </div>
+      <button class="main-btn" onclick="startGame()">Start</button>
+    </div>
+  </div>
+
+  <!-- Pantalla de preguntas -->
+  <div id="questionScreen" class="screen">
+    <div class="card">
+      <div class="instructions">
+        Read each text carefully 🤓 and choose the correct answer. 📖✨
+      </div>
+
+      <div class="progress-container">
+        <div id="progressBar"></div>
+      </div>
+
+		<div class="progress-count">
+		  <span id="progressText">1/10</span>
+		</div>
+
+		<div id="readingTextBox" class="reading-text-box"></div>
+
+		<div id="questionText" class="question-text"></div>
+
+      <div id="optionsContainer" class="options"></div>
+
+      <div id="feedbackBox" class="feedback-box"></div>
+    </div>
+  </div>
+
+  <!-- Pantalla final -->
+  <div id="endScreen" class="screen">
+    <div class="card">
+      <h1 id="finalTitle">Great Job!</h1>
+      <div class="score">Your score: <span id="finalScore"></span>/10</div>
+      <div id="resultMessage"></div>
+      <button class="main-btn" onclick="restartGame()">Try Again</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <script>
+	  const readingTexts = [
+	  {
+		startQuestion: 0,
+		endQuestion: 3,
+		text: `Last weekend, Laura moved into her new apartment. She's very happy because it has a bedroom, a small kitchen, and a balcony with a nice view. She already has a table and two chairs, but she doesn't have a sofa yet. Her brother offers to give her his old sofa because he doesn't need it anymore. Now Laura only has one question: Does it fit in my living room?`
+	  },
+	  {
+		startQuestion: 4,
+		endQuestion: 6,
+		text: `Mrs. Green gives the class a science project. Ben has some colored paper and glue, but he doesn't have any markers. Mia has markers and scissors, but she doesn't have any glue. Ben asks, "Do you have extra markers?" Mia smiles and says, "Yes, I do. We have everything we need now!"`
+	  },
+	  {
+		startQuestion: 7,
+		endQuestion: 9,
+		text: `The Wilson family is getting ready for a weekend camping trip. Mom has the food, and Dad has the tent. Emma has a flashlight, but she doesn't have a sleeping bag. Her brother asks, "Do you have a warm blanket?" Emma laughs and says, "Of course I do!"`
+	  }
+	];
+
+    const questions = [
+      {
+        question: "Why is Laura happy?",
+        options: ["Because her apartment has a swimming pool.", "Because her apartment has a bedroom, a kitchen, and a balcony.", "Because her apartment has three bedrooms.", "Because her apartment has a big garage."],
+        correct: 1
+      },
+      {
+        question: "What doesn't Laura have yet?",
+        options: ["A table", "A bed", "A sofa", "A balcony"],
+        correct: 2
+      },
+      {
+        question: "Who has an old sofa he doesn’t need?",
+        options: ["Laura", "Laura's brother", "Laura's friend", "aura's neighbor"],
+        correct: 1
+      },
+      {
+        question: "What question does Laura have?",
+        options: ["Does the sofa fit in my living room?", "Does my brother have another sofa?", "Does the apartment have a parking space?", "Does the sofa have a different color?"],
+        correct: 0
+      },
+      {
+        question: "What project does the class have?",
+        options: ["An art project.", "A science project.", "A history project.", "A math project."],
+        correct: 1
+      },
+      {
+        question: "What doesn't Ben have?",
+        options: ["Glue", "Colored paper", "Markers", "Scissors"],
+        correct: 2
+      },
+      {
+        question: "Why is Mia happy at the end?",
+        options: ["Because the teacher finishes the project.", "Because Ben gives her new scissors.", "Because they have everything they need.", "Because they don't have homework."],
+        correct: 2
+      },
+      {
+        question: "Who has the tent?",
+        options: ["Mom", "Dad", "Emma", "Her brother"],
+        correct: 1
+      },
+      {
+        question: "What doesn't Emma have?",
+        options: ["A flashlight", "Food", "A sleeping bag", "A tent"],
+        correct: 2
+      },
+      {
+        question: "What does Emma say she has?",
+        options: ["A new tent.", "A warm blanket.", "Extra food.", "A map."],
+        correct: 1
+      }
+    ];
+
+    const totalQuestions = questions.length;
+    let currentQuestion = 0;
+    let score = 0;
+    let wasWrongBefore = false;
+
+    const startScreen = document.getElementById("startScreen");
+    const questionScreen = document.getElementById("questionScreen");
+    const endScreen = document.getElementById("endScreen");
+    const questionText = document.getElementById("questionText");
+    const optionsContainer = document.getElementById("optionsContainer");
+	const progressText = document.getElementById("progressText");
+	const progressBar = document.getElementById("progressBar");
+	const readingTextBox = document.getElementById("readingTextBox");
+    const finalScore = document.getElementById("finalScore");
+    const resultMessage = document.getElementById("resultMessage");
+	const finalTitle = document.getElementById("finalTitle");
+    const feedbackBox = document.getElementById("feedbackBox");
+
+    function startGame() {
+      currentQuestion = 0;
+      score = 0;
+      wasWrongBefore = false;
+
+      startScreen.classList.remove("active");
+      endScreen.classList.remove("active");
+      questionScreen.classList.add("active");
+
+      showQuestion();
+    }
+
+    function showQuestion() {
+      wasWrongBefore = false;
+      feedbackBox.innerHTML = "";
+
+		const current = questions[currentQuestion];
+		questionText.textContent = current.question;
+		optionsContainer.innerHTML = "";
+
+		progressText.textContent = `${currentQuestion + 1}/${totalQuestions}`;
+		progressBar.style.width = `${((currentQuestion + 1) / totalQuestions) * 100}%`;
+
+		/* Buscar el párrafo correspondiente a la pregunta actual */
+		const currentReading = readingTexts.find((reading) => {
+		  return (
+			currentQuestion >= reading.startQuestion &&
+			currentQuestion <= reading.endQuestion
+		  );
+		});
+
+		/* Mostrar el párrafo */
+		if (currentReading) {
+		  readingTextBox.textContent = currentReading.text;
+		  readingTextBox.style.display = "block";
+		} else {
+		  readingTextBox.textContent = "";
+		  readingTextBox.style.display = "none";
+		}
+
+		current.options.forEach((optionText, index) => {
+		  const row = document.createElement("div");
+		  row.className = "option-row";
+
+		  const letter = document.createElement("div");
+		  letter.className = "option-letter";
+		  const letters = ["a", "b", "c", "d"];
+		  letter.textContent = letters[index];
+
+		  const button = document.createElement("button");
+		  button.className = "option-btn";
+		  button.innerHTML = `<span class="option-text">${optionText}</span>`;
+		  button.onclick = () => selectOption(index);
+
+		  row.appendChild(letter);
+		  row.appendChild(button);
+		  optionsContainer.appendChild(row);
+		});
+    }
+
+function selectOption(selectedIndex) {
+  const current = questions[currentQuestion];
+  const correctIndex = current.correct;
+	const allOptions = document.querySelectorAll(".option-btn");
+	const allRows = document.querySelectorAll(".option-row");
+	
+
+  // Limpiar estado anterior
+  allOptions.forEach((btn) => {
+    btn.disabled = false;
+    btn.classList.remove("correct", "wrong", "dimmed");
+
+    const oldLabel = btn.querySelector(".feedback-label");
+    if (oldLabel) oldLabel.remove();
+  });
+
+  // RESPUESTA CORRECTA
+  if (selectedIndex === correctIndex) {
+    if (!wasWrongBefore) {
+      score++;
+    }
+
+    const sound = new Audio("challenge/sounds/correct.mp3");
+    sound.play();
+
+    const emojis = ["🌟", "🎉", "🥳", "👏", "💪", "🤩"];
+    const messages = ["Perfect!", "Very good!", "You got it!", "Excellent!", "Amazing!", "Great job!"];
+    const randomIndex = Math.floor(Math.random() * emojis.length);
+
+	allOptions.forEach((btn, index) => {
+	  btn.disabled = true;
+
+	  if (index === correctIndex) {
+		btn.classList.add("correct");
+
+		const label = document.createElement("div");
+		label.className = "feedback-label";
+		label.innerHTML = `
+		  <div class="emoji">${emojis[randomIndex]}</div>
+		  <div class="text">${messages[randomIndex]}</div>
+		`;
+		btn.appendChild(label);
+	  } else {
+		btn.classList.add("dimmed");
+		allRows[index].style.opacity = "0.45";
+	  }
+	});
+
+    setTimeout(() => {
+      currentQuestion++;
+
+      if (currentQuestion >= totalQuestions) {
+        showEndScreen();
+      } else {
+        showQuestion();
+      }
+    }, 3000);
+
+  } else {
+    wasWrongBefore = true;
+
+    const sound = new Audio("challenge/sounds/wrong.mp3");
+    sound.play();
+
+    const errorEmojis = ["😅", "😬", "😕", "🤔", "😣", "😰"];
+    const errorMessages = [
+      "Try again",
+      "Almost...",
+      "Do not give up",
+      "Try one more time",
+      "You can do it!",
+      "Oops! Try again"
+    ];
+    const errorIndex = Math.floor(Math.random() * errorEmojis.length);
+
+	allOptions.forEach((btn, index) => {
+	  btn.disabled = true;
+
+	  if (index === selectedIndex) {
+		btn.classList.add("wrong");
+
+		const label = document.createElement("div");
+		label.className = "feedback-label";
+		label.innerHTML = `
+		  <div class="emoji">${errorEmojis[errorIndex]}</div>
+		  <div class="text">${errorMessages[errorIndex]}</div>
+		`;
+		btn.appendChild(label);
+	  } else {
+		btn.classList.add("dimmed");
+		allRows[index].style.opacity = "0.45";
+	  }
+	});
+
+    setTimeout(() => {
+	allOptions.forEach((btn, index) => {
+	  btn.disabled = false;
+	  btn.classList.remove("wrong", "dimmed", "correct");
+	  allRows[index].style.opacity = "1";
+
+	  const oldLabel = btn.querySelector(".feedback-label");
+	  if (oldLabel) oldLabel.remove();
+	});
+    }, 3000);
+  }
+}
+
+    function showEndScreen() {
+      questionScreen.classList.remove("active");
+      endScreen.classList.add("active");
+
+      finalScore.textContent = score;
+
+	if (score === 10) {
+	  finalTitle.textContent = "Excellent work!";
+	  resultMessage.textContent = "🌟 Perfect! Excellent work!";
+	} else if (score >= 8) {
+	  finalTitle.textContent = "Great job!";
+	  resultMessage.textContent = "🎉 Very good! You did a great job.";
+	} else if (score >= 5) {
+	  finalTitle.textContent = "Good work!";
+	  resultMessage.textContent = "👍 Good work! Keep practicing.";
+	} else {
+	  finalTitle.textContent = "Keep going!";
+	  resultMessage.textContent = "💪 Keep going. Practice makes progress.";
+	}
+
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+
+      const victoryMusic = new Audio("challenge/sounds/victory.mp3");
+      victoryMusic.play();
+    }
+
+    function restartGame() {
+      startGame();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+
+@charset "UTF-8";
+/* CSS Document */
+
+.containermov {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.circle {
+  flex: 1 1 100px; /* Mínimo 100px, pero se adapta */
+  max-width: 120px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+/* Imagen centrada dentro */
+.circle img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* Cuando se activa */
+.circle.revealed img {
+  opacity: 1;
+}
+.circle.revealed {
+  background-color: transparent;
+  border: none;
+}
+.group-left, .group-right {
+	display: flex;
+	gap: 10px;
+}
+.group-right {
+	margin-left: 100px;
+}
+.group-center {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+}
+.imgwords {
+	height: 300px;
+}
+
+.final-image {
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.final-image img {
+  max-width: 60%;
+  height: auto;
+  border-radius: 12px;
+}
+.imgcol {
+  max-width: 50%;
+  height: auto;
+  border-radius: 12px;
+  /* box-shadow: 0 4px 12px rgba(0,0,0,0.3); */
+}
+.imgcol2 {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+/* seccion Color Chart */
+.selected-icons {
+  width: 700px;
+  height: 600px;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 10px;
+  background-color: white;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+  .selected-icons img {
+    width: 60px;
+    height: 60px;
+    border-radius: 0%;
+  }
+.color-chart-box {
+  position: fixed;              /* Se mantiene fijo */
+  bottom: 20px;
+  right: 10px;                  /* A 10px del borde derecho */
+  background-color: #0c2955;
+  padding: 10px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;       /* Acomoda en columnas (una fila debajo de otra) */
+  z-index: 10;
+  gap: 6px;
+}
+  .chart-icon {
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 0%;
+    transition: transform 0.2s ease;
+  }
+  .chart-icon:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+  }
+.chart-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.chart-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.chart-controls button {
+  background-color: #0c2955;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+.chart-controls button:hover {
+  background-color: #134080;
+}
+
+.delete-icons {
+  text-align: center;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+.delete-icons button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+.delete-icons button:hover {
+  background-color: #1976d2;
+}
+.delete-icons i.material-icons {
+  vertical-align: middle;
+}
+.colorChartMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px; /* por si necesitas espacio extra abajo */
+}
+.line-break {
+  flex-basis: 100%;
+  height: 0;
+}
+#clearIconsBtn {
+	padding: 8px 40px;
+}
+.group-btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btnCC {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 8px 40px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnCC:hover {
+  background-color: #1976d2;
+}
+
+.btnCC i {
+  font-size: 20px;
+}
+
+.colorChartMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px; /* por si necesitas espacio extra abajo */
+}
+.line-break {
+  flex-basis: 100%;
+  height: 0;
+}
+#clearIconsBtn {
+	padding: 8px 40px;
+}
+#enterLineBtn {
+	padding: 8px 40px;
+}
+
+.selected-icons img {
+  width: 100px;
+  height: 100px;
+  border-radius: 0%;
+}
+
+.btnCC {
+  width: 115px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.containermov2 {
+  display: flex;
+  justify-content: flex-start; /* ← esto alinea todo a la izquierda */
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 520px; /* ajusta si quieres que ocupe menos o más */
+  margin: 0 auto; /* centra el bloque dentro del vocab-card */
+}
+  .circle:hover {
+    transform: scale(1.1);
+	  }
+/* Responsive ajustes */
+@media (max-width: 800px) {
+  .circle {
+    flex: 0 1 calc(30% - 10px); /* Menos por fila */
+    max-width: 90px;
+  }
+}
+@media (max-width: 500px) {
+  .circle {
+    flex: 0 1 calc(45% - 10px); /* 2 por fila */
+    max-width: 80px;
+  }
+}

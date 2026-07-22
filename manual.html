@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 4, Lesson 2</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        body {
+			margin: 60px 10px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            height: 100dvh;
+            background: #f4f4f4;
+        }
+		.header-bar {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 40px; /* Ajusta según sea necesario */
+			background-color: #1e3a8a; /* Azul oscuro */
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 20px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+			z-index: 1000;
+		}
+
+		.header-bar img {
+			height: 28px; /* Ajusta el tamaño del logo */
+		}
+
+		.header-bar .header-text {
+			color: white;
+			font-size: 14px;
+		}
+
+        .wrapper {
+			margin: 60px;
+            background: #fff;
+            padding: 5px 30px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+                        rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 1200px;
+			min-height: 900px;
+        }
+		.container {
+			width: 100%;
+			min-height: auto; /*Medida de contenedor alto*/
+			position: relative;
+			overflow-x: hidden;
+			max-width: 1140px;
+		}
+        .content {
+			width: 1200px;
+			max-width: 1140px;
+            padding: 10px 0;
+        }
+		.content-box {
+			position: absolute;
+			transition: 0.3s ease;
+			display: flex;
+			align-items: flex-start;
+			justify-content: flex-start;
+		}
+		h1, h2 {
+			color: #293a7b;
+		}		
+		h3{
+			color: #293a7b;
+			font-size: 15px;
+		}
+		p {
+			color: #595959;
+		}
+        input[type="radio"] {
+            display: none;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            position: relative;
+            padding: 20px 0;
+			font-size: 14px;
+        }
+        nav::after {
+            position: absolute;
+            content: "";
+            background: #e7e7e7;
+            width: 100%;
+            height: 1px;
+            top: 62px;
+            z-index: 0;
+        }
+        nav::before {
+            position: absolute;
+            content: "";
+            background: #293a7b;
+            width: 16.6667%;
+            height: 5px;
+            top: 58px;
+            left: 0;
+            z-index: 1;
+            border-radius: 8px 8px 0 0;
+            transition: 0.3s;
+        }
+        nav label {
+            position: relative;
+            cursor: pointer;
+            width: 16.6667%;
+            padding: 10px 0;
+            text-align: center;
+            font-weight: 500;
+            transition-duration: 0.4s;
+            text-decoration: none;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+		nav label i {
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        nav label::after {
+            position: absolute;
+            content: "";
+            background: #89acd9;
+            display: block;
+            padding-top: 200%;
+            padding-left: 350%;
+            margin-top: -100%;
+            opacity: 0;
+            transition: all 0.9s;
+        }
+        nav label:active::after {
+            padding: 0;
+            margin: 0;
+            opacity: 1;
+            transition: 0s;
+        }
+
+			#daily:checked ~ nav::before { left: 0; }
+			#steps:checked ~ nav::before { left: 16.6667%; }
+			#seg1:checked ~ nav::before { left: 33.3333%; }
+			#seg2:checked ~ nav::before { left: 50%; }
+			#seg3:checked ~ nav::before { left: 66.6667%; }
+			#ext:checked ~ nav::before { left: 83.3333%; }
+
+			#daily:checked ~ .container .content-box { left: 0; }
+			#steps:checked ~ .container .content-box { left: -100%; }
+			#seg1:checked ~ .container .content-box { left: -200%; }
+			#seg2:checked ~ .container .content-box { left: -300%; }
+			#seg3:checked ~ .container .content-box { left: -400%; }
+			#ext:checked ~ .container .content-box { left: -500%; }
+
+			#daily:checked ~ nav label:nth-child(1),
+			#steps:checked ~ nav label:nth-child(2),
+			#seg1:checked ~ nav label:nth-child(3),
+			#seg2:checked ~ nav label:nth-child(4),
+			#seg3:checked ~ nav label:nth-child(5),
+			#ext:checked ~ nav label:nth-child(6) {
+				color: #293a7b;
+			}
+        ::selection {
+            background: #293a7b;
+            color: #fff;
+        }
+        .accordion {
+            display: flex;
+			max-width: 100%;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 0px 0px;
+        }
+        .accordion .accordion-text {
+            width: 100%;
+        }
+        .accordion .accordion-text .title {
+            font-size: 35px;
+            font-weight: 500;
+            color: #065fd4;
+        }
+        .accordion .accordion-text .faq-text {
+            margin-top: 25px;
+            min-height: 500px;
+            overflow-y: auto;
+        }
+        .faq-text::-webkit-scrollbar {
+            display: none;
+        }
+        .accordion .accordion-text li {
+            list-style: none;
+            cursor: pointer;
+        }
+        .accordion-text li .question-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .accordion-text li .question-arrow .question {
+            font-size: 15px;
+            font-weight: 500;
+            color: #595959;
+            transition: all 0.3s ease;
+        }
+        .accordion-text li .question-arrow .arrow {
+            font-size: 20px;
+            color: #595959;
+            transition: all 0.3s ease;
+        }
+        .accordion-text li.showAnswer .question-arrow .arrow {
+            transform: rotate(-180deg);
+        }
+        .accordion-text li:hover .question-arrow .question,
+        .accordion-text li:hover .question-arrow .arrow {
+            color: #065fd4;
+        }
+        .accordion-text li.showAnswer .question-arrow .question,
+        .accordion-text li.showAnswer .question-arrow .arrow {
+            color: #065fd4;
+        }
+      	.accordion-text li .line {
+            display: block;
+            height: 1px;
+            width: 100%;
+            margin: 10px 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .accordion-text li p {
+            width: 92%;
+            font-size: 15px;
+            font-weight: 500;
+            color: #595959;
+            display: none;
+			margin-bottom: 20px;
+			padding: 0 0 10px 20px;
+        }
+        .accordion-text li.showAnswer p {
+            display: block;
+        }
+		.steps-list {
+			list-style-type: decimal;
+			padding-left: 20px;
+		}
+		.steps-list li {
+			margin-bottom: 0px;
+		}
+		.steps-list p {
+			margin: 0;
+			padding-left: 20px;
+			font-size: 15px;
+			font-weight: 500;
+			color: #595959;
+			text-indent: -20px;
+		}
+		.indented-paragraph {
+			text-indent: 0px;
+			margin-left: 20px;
+			margin-right: 0;
+		} 
+		table {
+            width: 98%;
+            max-width: 1000px;
+			margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            vertical-align: top;
+            border-bottom: 1px solid #ddd;
+            color: #555;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #293a7b;
+            font-size: 18px;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #293a7b;
+        }
+
+        /* Ajustes específicos para la segunda tabla */
+        .tabla-vocabulario td:nth-child(1) {
+            width: 15%; /* Ajustar ancho de la primera columna */
+        }
+        .tabla-vocabulario td:nth-child(2) {
+            width: 30%; /* Ajustar ancho de la segunda columna */
+        }
+        .tabla-vocabulario td:nth-child(3) {
+            width: 55%; /* Ajustar ancho de la tercera columna */
+        }
+		.tabla-vocabulario4{
+			max-width: 300px;
+			margin: 10px; /* elimina cualquier centrado automático */
+    		float: left;
+		}
+
+		/* Ajustes específicos para la segunda tabla */
+        .tabla-vocabulario2 td:nth-child(1) {
+            width: 15%; /* Ajustar ancho de la primera columna */
+        }
+        .tabla-vocabulario2 td:nth-child(2) {
+            width: 85%; /* Ajustar ancho de la segunda columna */
+        }
+		i.fas.fa-image {
+			font-size: 1em; /* Mantener el tamaño del icono igual que el tamaño del texto */
+			vertical-align: middle; /* Alinear el icono con el texto */
+			margin-right: 5px; /* Añadir un pequeño margen a la derecha del icono */
+			color: #0174b1;
+		}
+		.example-image {
+            display: block;
+            margin: 20px auto;
+            width: 100%;
+			max-width: 1000px;
+            height: auto; /* Mantener la proporción de la imagen */
+        }
+		/* Estilos de Accordion */
+        .accordion2 {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px auto;
+            border-radius: 8px;
+			color: #595959;	
+        }
+        .accordion-item2 {
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;z
+			text-decoration: none; /* Elimina el subrayado del texto */
+			border: none; /* Asegúrate de que no haya bordes */
+        }
+        .accordion-header2 {
+            background-color: #e9f8ff;
+            color: #293a7b;
+            cursor: pointer;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .accordion-content2 {
+            display: none;
+            padding: 15px;
+            background-color: #fff;
+        }
+        .accordion-header2 i {
+            transition: transform 0.3s ease;
+        }
+        .accordion-header.active2 i {
+            transform: rotate(180deg);
+        }
+		.header-container {
+		  display: flex; /* Hace que los hijos del contenedor se alineen en una fila */
+		  justify-content: space-between;
+		  align-items: center;
+		  width: 100%;
+		  margin: 20px 0;
+		}
+		.header-container h1 {
+		  margin: 0px; /* Elimina márgenes predeterminados */
+		  padding: 0; /* Elimina rellenos predeterminados */
+		}
+		  .iconcc {
+            height: 24px;
+        }
+		.highlight2 {
+            position: relative;
+            top: -6px; /* Ajusta este valor para subir o bajar el texto */
+        }
+
+		.accordion-text li .example-image {
+		  display: none; /* Oculta por defecto */
+		}
+
+		.accordion-text li.showAnswer .example-image {
+		  display: block; /* Muestra cuando el acordeón está abierto */
+		}
+		.letras{
+			font-family: Arial, sans-serif;
+			font-size: 80px;
+			font-weight: bold;
+			color: black;
+
+			width: 100%;
+			text-align: center;
+			margin-bottom: 30px;
+
+		}
+.container {
+	width: 100%;
+	max-width: 1140px;
+	height: auto !important;
+	min-height: 0 !important;
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: visible;
+}
+
+.content-box {
+	width: 100% !important;
+	display: block !important;
+	position: relative !important;
+	top: auto !important;
+	left: auto !important;
+	transition: none !important;
+}
+
+.content {
+	display: none;
+	width: 100% !important;
+	max-width: 100% !important;
+	flex: none !important;
+	padding: 10px 0;
+	overflow: visible;
+}
+
+/* Mostrar únicamente la pestaña seleccionada */
+#daily:checked ~ .container .content-box .content:nth-child(1),
+#steps:checked ~ .container .content-box .content:nth-child(2),
+#seg1:checked ~ .container .content-box .content:nth-child(3),
+#seg2:checked ~ .container .content-box .content:nth-child(4),
+#seg3:checked ~ .container .content-box .content:nth-child(5),
+#ext:checked ~ .container .content-box .content:nth-child(6) {
+	display: block;
+}
+
+		
+		/* DAILY ADVANCE */
+.daily-advance {
+    width: 100%;
+    padding-bottom: 30px;
+}
+
+.daily-subtitle {
+    margin: 65px 0 10px 32px;
+    color: #293a7b;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.daily-weeks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 38px 34px;
+    padding: 0 32px;
+}
+
+.daily-week {
+    min-width: 0;
+}
+
+.daily-week h3 {
+    text-align: center;
+    font-size: 34px;
+    margin-bottom: 14px;
+    color: #293a7b;
+}
+
+.daily-table {
+    width: 100% !important;
+    max-width: none !important;
+    table-layout: fixed;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.daily-table th,
+.daily-table td {
+    border-right: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;
+    vertical-align: middle;
+}
+
+.daily-table th:last-child,
+.daily-table td:last-child {
+    border-right: none;
+}
+
+.daily-table th {
+    text-align: center;
+    font-size: 18px;
+    padding: 18px 12px;
+}
+
+.daily-table td {
+    font-size: 15px;
+    padding: 17px 18px;
+}
+
+.daily-table th:nth-child(1),
+.daily-table td:nth-child(1) {
+    width: 34%;
+}
+
+.daily-table th:nth-child(2),
+.daily-table td:nth-child(2),
+.daily-table th:nth-child(3),
+.daily-table td:nth-child(3) {
+    width: 33%;
+    text-align: center;
+}
+
+.daily-day {
+    text-align: left !important;
+    line-height: 1.25;
+}
+
+.daily-day strong {
+    color: #222222;
+}
+
+.daily-notes {
+    margin: 16px 32px 0;
+}
+
+.daily-notes h3 {
+    margin: 16px 0 12px;
+    color: #293a7b;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+.daily-notes p {
+    margin: 0 0 14px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #333333;
+}
+
+.daily-notes strong {
+    color: #222222;
+}
+
+@media (max-width: 900px) {
+    .daily-subtitle {
+        margin: 35px 0 10px;
+    }
+
+    .daily-weeks-grid {
+        grid-template-columns: 1fr;
+        padding: 0;
+        gap: 35px;
+    }
+
+    .daily-notes {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .daily-week h3 {
+        font-size: 26px;
+    }
+
+    .daily-table th {
+        font-size: 12px;
+        padding: 12px 6px;
+    }
+
+    .daily-table td {
+        font-size: 10px;
+        padding: 12px 7px;
+    }
+
+    .daily-table th:nth-child(1),
+    .daily-table td:nth-child(1) {
+        width: 40%;
+    }
+
+    .daily-table th:nth-child(2),
+    .daily-table td:nth-child(2),
+    .daily-table th:nth-child(3),
+    .daily-table td:nth-child(3) {
+        width: 30%;
+    }
+}
+        /* Media Queries for Responsiveness */
+		@media (max-width: 1260px) {
+				body {
+					margin: 20px 10px;
+				}
+				.wrapper {
+					max-width: 960px; /*Medida de contenedor*/
+				}
+        nav {
+            padding: 0px 0;
+        }
+				.container {
+					max-width: 900px;
+					width: 960px;
+				}
+				.content {
+					max-width: 900px;
+					width: 960px;
+				}
+				.accordion2 {
+					max-width: 960px;
+			  }
+				td {
+					font-size: 14px;
+				}
+			}
+
+        @media (max-width: 1024px) {
+			body {
+				margin: 20px 10px;
+			}
+			
+			.wrapper {
+				max-width: 840px; /*Medida de contenedor*/
+			}
+			.container {
+				max-width: 780px;
+				width: 840px;
+				margin-top: 20px;
+			}
+			.content {
+				max-width: 780px;
+				width: 840px;
+			}
+			.accordion2 {
+				max-width: 780px;
+      	 	}
+			nav {
+				flex-direction: column;
+				padding: 10px;
+			}
+				nav::after {
+					height: 0px;
+				}
+			nav::before {
+				width: 100%;
+				height: 3px;
+				top: 50px;
+				left: 0;
+			}
+            nav label {
+                width: 100%;
+                padding: 10px 0;
+                text-align: left;
+                border-bottom: 1px solid #e7e7e7;
+            }
+			/* Ajustes para mantener el indicador de navegación */
+			#daily:checked ~ nav::before { left: 0; top: 18%; }
+			#steps:checked ~ nav::before { left: 0; top: 34%; }
+			#seg1:checked ~ nav::before { left: 0; top: 49%; }
+			#seg2:checked ~ nav::before { left: 0; top: 65%; }
+			#seg3:checked ~ nav::before { left: 0; top: 80%; }
+			#ext:checked ~ nav::before { left: 0; top: 96%; }
+			th {
+				font-size: 16px;
+			}
+			td {
+				font-size: 14px;
+			}
+        }
+		@media (max-width: 900px) {
+			body {
+				margin: 20px 10px;
+			}
+			.iconcc {
+            height: 20px;
+      		  }
+			.wrapper {
+				max-width: 720px; /*Medida de contenedor*/
+			}
+			.container {
+				max-width: 660px;
+				width: 720px;
+				margin-top: 20px;
+			}
+			.content {
+				max-width: 660px;
+				width: 720px;
+			}
+			.accordion2 {
+				max-width: 720px;
+      	  }
+			nav {
+				flex-direction: column;
+				padding: 10px;
+			}
+				nav::after {
+					height: 0px;
+				}
+			nav::before {
+				width: 100%;
+				height: 3px;
+				top: 50px;
+				left: 0;
+			}
+            nav label {
+                width: 100%;
+                padding: 10px 0;
+                text-align: left;
+                border-bottom: 1px solid #e7e7e7;
+            }
+			th {
+				font-size: 16px;
+			}
+			td {
+				font-size: 14px;
+			}
+        }
+		@media (max-width: 768px) {
+			body {
+				margin: 20px 10px;
+			}
+			.iconcc {
+            	 height: 15px;
+			 }
+			h1 {
+				font-size: 20px;
+			}		
+			.wrapper {
+				max-width: 520px; /*Medida de contenedor*/
+			}	
+			.container {
+				max-width: 460px;
+				width: 520px;
+				
+			}
+			.content {
+				max-width: 460px;
+				width: 520px;
+			}
+			.accordion2 {
+				max-width: 520px;
+      	  }
+			td {
+				font-size: 11px;
+			}
+        }
+		@media (max-width: 576px) {
+			body {
+				margin: 20px 10px;
+			}
+			.wrapper {
+				max-width: 468px; /*Medida de contenedor*/
+			}	
+			.container {
+				max-width: 420px;
+				width: 468px;
+			}
+			.content {
+				max-width: 420px;
+				width: 468px;
+			}
+			.accordion2 {
+				max-width: 468px;
+      	  }
+			td {
+				font-size: 11px;
+			}
+        }
+		@media (max-width: 480px) {
+			body {
+				margin: 20px 10px;
+			}
+			.iconcc {
+           	 height: 8px;
+      		}
+
+			.wrapper {
+				max-width: 330px; /*Medida de contenedor*/
+			}	
+			.container {
+				max-width: 290px;
+				width: 330px;
+			}
+			.content {
+				max-width: 290px;
+				width: 330px;
+			}
+			.accordion2 {
+				max-width: 330px;
+      	    }
+			table {
+            width: 100%;
+            max-width: 100px;
+       	 	}
+			td {
+				font-size: 10px;
+			}
+			th {
+				font-size: 12px;
+			}
+			td {
+				font-size: 10px;
+			}
+        }
+		/* CUADRÍCULA RESPONSIVA DE PRACTICE */
+		.tabla-practice {
+			display: block;
+			width: 100%;
+			max-width: 1000px;
+			margin: 0 auto;
+			overflow: visible;
+			border-collapse: separate;
+		}
+
+		.tabla-practice tbody {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 18px;
+		}
+
+		.tabla-practice tr {
+			display: contents;
+		}
+
+		.tabla-practice td,
+		.tabla-practice td:nth-child(n) {
+			width: auto;
+			min-width: 0;
+			box-sizing: border-box;
+			overflow: visible;
+			vertical-align: top;
+		}
+
+		.tabla-practice img {
+			display: block;
+			width: 100% !important;
+			max-width: 220px;
+			height: auto;
+			margin: 0 auto;
+			object-fit: contain;
+		}
+
+		@media (max-width: 850px) {
+			.tabla-practice tbody {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+		}
+
+		@media (max-width: 600px) {
+			.tabla-practice tbody {
+				grid-template-columns: 1fr;
+			}
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="header-bar">
+		<img src="images/Virtual_03_B.png" alt="Logo"> <!-- Reemplaza con la ruta del logo -->
+		<span class="header-text">Manuals <span style="font-size: 10px">▼</span></span>
+	</div>
+	<div class="wrapper">
+		<div class="header-container">
+  			<h1>Level 5 > Lesson 1 > Expressing ownership and possession.</h1>
+		</div>
+		<input type="radio" name="slider" id="daily" checked>
+		<input type="radio" name="slider" id="steps">
+		<input type="radio" name="slider" id="seg1">
+		<input type="radio" name="slider" id="seg2">
+		<input type="radio" name="slider" id="seg3">
+		<input type="radio" name="slider" id="ext">
+
+		<nav>
+			<label for="daily" class="daily">DAILY ADVANCE</label>
+			<label for="steps" class="steps">STEPS OF THE METHOD</label>
+			<label for="seg1" class="seg1">TARGET</label>
+			<label for="seg2" class="seg2">READING</label>
+			<label for="seg3" class="seg3">PRACTICE</label>
+			<label for="ext" class="ext">EXTRA ACTIVITIES</label>
+		</nav>
+        <div class="container">
+            <div class="content-box">
+				<!-- DAILY ADVANCE -->
+				<div class="content">
+					<section class="daily-advance">
+
+						<h2>Daily Advance</h2>
+
+						<p class="daily-subtitle">Daily Lesson Schedule for SMART Courses</p>
+
+						<div class="daily-weeks-grid">
+
+							<!-- WEEK 1 -->
+							<section class="daily-week">
+								<h3>WEEK 1</h3>
+
+								<table class="daily-table">
+									<thead>
+										<tr>
+											<th>DAY</th>
+											<th>PART A</th>
+											<th>PART B</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td class="daily-day">
+												<strong>Monday 1</strong><br>
+												(Group A)
+											</td>
+											<td>L1 and L2</td>
+											<td>L21 and L22</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Tuesday 1</strong><br>
+												(Group B)
+											</td>
+											<td>L1 and L2</td>
+											<td>L21 and L22</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Wednesday 1</strong><br>
+												(Group A)
+											</td>
+											<td>L3 and L4</td>
+											<td>L23 and L24</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Thursday 1</strong><br>
+												(Group B)
+											</td>
+											<td>L3 and L4</td>
+											<td>L23 and L24</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+							<!-- WEEK 2 -->
+							<section class="daily-week">
+								<h3>WEEK 2</h3>
+
+								<table class="daily-table">
+									<thead>
+										<tr>
+											<th>DAY</th>
+											<th>PART A</th>
+											<th>PART B</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td class="daily-day">
+												<strong>Monday 2</strong><br>
+												(Group A)
+											</td>
+											<td>L5 and L6</td>
+											<td>L25 and L26</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Tuesday 2</strong><br>
+												(Group B)
+											</td>
+											<td>L5 and L6</td>
+											<td>L25 and L26</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Wednesday 2</strong><br>
+												(Group A)
+											</td>
+											<td>L7 and L8</td>
+											<td>L27 and L28</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Thursday 2</strong><br>
+												(Group B)
+											</td>
+											<td>L7 and L8</td>
+											<td>L27 and L28</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+							<!-- WEEK 3 -->
+							<section class="daily-week">
+								<h3>WEEK 3</h3>
+
+								<table class="daily-table">
+									<thead>
+										<tr>
+											<th>DAY</th>
+											<th>PART A</th>
+											<th>PART B</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td class="daily-day">
+												<strong>Monday 3</strong><br>
+												(Group A)
+											</td>
+											<td>L9 and L10</td>
+											<td>L29 and L30</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Tuesday 3</strong><br>
+												(Group B)
+											</td>
+											<td>L9 and L10</td>
+											<td>L29 and L30</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Wednesday 3</strong><br>
+												(Group A)
+											</td>
+											<td>L11 and L12</td>
+											<td>L31 and L32</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Thursday 3</strong><br>
+												(Group B)
+											</td>
+											<td>L11 and L12</td>
+											<td>L31 and L32</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+							<!-- WEEK 4 -->
+							<section class="daily-week">
+								<h3>WEEK 4</h3>
+
+								<table class="daily-table">
+									<thead>
+										<tr>
+											<th>DAY</th>
+											<th>PART A</th>
+											<th>PART B</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td class="daily-day">
+												<strong>Monday 4</strong><br>
+												(Group A)
+											</td>
+											<td>L13 and L14</td>
+											<td>L33 and L34</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Tuesday 4</strong><br>
+												(Group B)
+											</td>
+											<td>L13 and L14</td>
+											<td>L33 and L34</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Wednesday 4</strong><br>
+												(Group A)
+											</td>
+											<td>L15 and L16</td>
+											<td>L35 and L36</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Thursday 4</strong><br>
+												(Group B)
+											</td>
+											<td>L15 and L16</td>
+											<td>L35 and L36</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+						</div>
+
+						<div class="daily-notes">
+							<h3>Bonus Lessons</h3>
+
+							<p>
+								The platform includes 20 lessons per level. However, for the SMART
+								course, the last 4 lessons will be considered “Bonus Lessons” since
+								only 16 lessons can realistically be covered during each cycle due
+								to scheduling and time limitations. The Bonus Lessons are: Lessons
+								17–20 in Part A and Lessons 37–40 in Part B. These lessons should
+								NOT be taught in class during the SMART course. They are available
+								only as optional review material for students to study independently
+								on the platform if they choose to do so.
+							</p>
+
+							<h3>Holidays</h3>
+
+							<p>
+								Whenever there is a holiday during the cycle, the lesson taught on
+								the next class day must be the next lesson in the program.
+								<strong>NEVER SKIP ANY LESSONS!</strong> An additional class day
+								must be scheduled with the Branch Director to make up for the
+								holiday (usually on Fridays), since in the SMART course, all 16
+								scheduled lessons must be fully covered without exception.
+							</p>
+						</div>
+						<!-- V-SMART SCHEDULE -->
+						<p class="daily-subtitle" style="margin-top: 55px;">
+							Daily Lesson Schedule for V-SMART courses
+						</p>
+
+						<div class="daily-weeks-grid">
+
+							<!-- V-SMART WEEK 1 -->
+							<section class="daily-week">
+								<h3>WEEK 1</h3>
+
+								<table class="daily-table">
+									<thead>
+										<tr>
+											<th>DAY</th>
+											<th>PART A</th>
+											<th>PART B</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td class="daily-day">
+												<strong>Monday 1</strong>
+											</td>
+											<td>L1</td>
+											<td>L21</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Tuesday 1</strong>
+											</td>
+											<td>L2</td>
+											<td>L22</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Wednesday 1</strong>
+											</td>
+											<td>L3</td>
+											<td>L23</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Thursday 1</strong>
+											</td>
+											<td>L4</td>
+											<td>L24</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Friday 1</strong>
+											</td>
+											<td>L5</td>
+											<td>L25</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+							<!-- V-SMART WEEK 2 -->
+							<section class="daily-week">
+								<h3>WEEK 2</h3>
+
+								<table class="daily-table">
+									<thead>
+										<tr>
+											<th>DAY</th>
+											<th>PART A</th>
+											<th>PART B</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td class="daily-day">
+												<strong>Monday 2</strong>
+											</td>
+											<td>L6</td>
+											<td>L26</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Tuesday 2</strong>
+											</td>
+											<td>L7</td>
+											<td>L27</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Wednesday 2</strong>
+											</td>
+											<td>L8</td>
+											<td>L28</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Thursday 2</strong>
+											</td>
+											<td>L9</td>
+											<td>L29</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Friday 2</strong>
+											</td>
+											<td>L10</td>
+											<td>L30</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+							<!-- V-SMART WEEK 3 -->
+							<section class="daily-week">
+								<h3>WEEK 3</h3>
+
+								<table class="daily-table">
+									<thead>
+										<tr>
+											<th>DAY</th>
+											<th>PART A</th>
+											<th>PART B</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td class="daily-day">
+												<strong>Monday 3</strong>
+											</td>
+											<td>L11</td>
+											<td>L31</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Tuesday 3</strong>
+											</td>
+											<td>L12</td>
+											<td>L32</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Wednesday 3</strong>
+											</td>
+											<td>L13</td>
+											<td>L33</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Thursday 3</strong>
+											</td>
+											<td>L14</td>
+											<td>L34</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Friday 3</strong>
+											</td>
+											<td>L15</td>
+											<td>L35</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+							<!-- V-SMART WEEK 4 -->
+							<section class="daily-week">
+								<h3>WEEK 4</h3>
+
+								<table class="daily-table">
+									<thead>
+										<tr>
+											<th>DAY</th>
+											<th>PART A</th>
+											<th>PART B</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td class="daily-day">
+												<strong>Monday 4</strong>
+											</td>
+											<td>L16</td>
+											<td>L36</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Tuesday 4</strong>
+											</td>
+											<td>L17</td>
+											<td>L37</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Wednesday 4</strong>
+											</td>
+											<td>L18</td>
+											<td>L38</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Thursday 4</strong>
+											</td>
+											<td>L19</td>
+											<td>L39</td>
+										</tr>
+
+										<tr>
+											<td class="daily-day">
+												<strong>Friday 4</strong>
+											</td>
+											<td>L20</td>
+											<td>L40</td>
+										</tr>
+									</tbody>
+								</table>
+							</section>
+
+						</div>
+
+						<div class="daily-notes">
+							<h3>Holidays</h3>
+
+							<p>
+								Whenever there is a holiday in the cycle, the lesson to teach
+								the day after the holiday will be the next one in the program.
+								<strong>NEVER SKIP ANY LESSONS!</strong> At the end of the course,
+								lessons 20 and 40 will not be taught.
+							</p>
+						</div>
+					</section>
+				</div>
+				<!-- Steps of the method -->
+                <div class="content">
+                    <h2>Steps of the method</h2>
+                    <div class="accordion">
+                        <div class="accordion-text">
+                            <ul class="faq-text">
+                                <li>
+                                    <div class="question-arrow">
+                                        <span class="question">Class routine</span>
+                                        <i class="bx bxs-chevron-down arrow"></i>
+                                    </div>
+                                    <span class="line"></span>
+                                    <p><b>a. Give a brief explanation of the Educational Objective in English.</b></p>
+                                    <p>Make sure you clearly explain the objective and the skills students are expected to develop in the lesson. This shouldn't take more than a few seconds.</p>
+                                </li>
+                                <li>
+                                    <div class="question-arrow">
+                                        <span class="question">Step 1. Go over the language target.</span>
+                                        <i class="bx bxs-chevron-down arrow"></i>
+                                    </div>
+                                        <span class="line"></span>
+										<ol class="steps-list" style="margin-left: 18px;">
+										<li>
+											<p>a. Play the video of the target structure. This is particularly important for students to hear the language in context and become familiar with the natural use of the structure.</p>
+										</li>
+										<li>
+											<p>b. Clarify any questions students may have about the video.</p>
+										</li>
+									</ol>
+                                </li>
+                                <li>
+                                    <div class="question-arrow">
+                                        <span class="question">Step 2. Go over the practice activity.</span>
+                                        <i class="bx bxs-chevron-down arrow"></i>
+                                    </div>
+                                    <span class="line"></span>
+										<p>Explain to your students that they will listen to 3 short texts: a text message, an instagram post and an email. Then they will read the texts meaningfully. Tell students to be aware of pronunciation, intonation, and fluency.</p>
+										<ol class="steps-list" style="margin-left: 18px;">
+										<li>
+											<p>a. Show the first text and play the audio. Ask students to read along.</p>
+										</li>
+										<li>
+											<p>b. Introduce the new vocabulary and/or expressions.</p>
+										
+												<p style="margin-left: 18px; margin-top: -22px;">- Show the first vocabulary slide found in the text.</p>
+												<p style="margin-left: 18px; margin-top: -22px;">- Select one student and have him/her read the word out loud. If the pronunciation is incorrect, have him/her follow the color chart guide found on the slide. Be sure to give constant feedback on pronunciation, and/or intonation using the Color Chart.</p>
+												<p style="margin-left: 18px; margin-top: -22px;">- Explain the word using perception and production.</p>
+												<p style="margin-left: 18px; margin-top: -22px;">- Continue in the same fashion with the rest of the words.</p>
+										</li>
+										<li>
+											<p>c. Show the first text and play the audio again as students read along.</p>
+												<p style="margin-left: 18px; margin-top: -22px;">- Select a student and have him/her read the text.</p>
+												<p style="margin-left: 18px; margin-top: -22px;">- Follow the correction process for pronunciation, intonation, and fluency.</p>
+										</li>
+										<li>
+											<p>d. Repeat steps a to c for the rest of the texts.</p>
+										</li>
+									</ol>
+                                </li>
+                                <li>
+                                    <div class="question-arrow">
+                                        <span class="question">Step 3. Go over the reading activity.</span>
+                                        <i class="bx bxs-chevron-down arrow"></i>
+                                    </div>
+                                    <span class="line"></span>
+									<p>Each lesson has a different practice activity, and a different procedure. Check the corresponding lesson to learn the correct procedure for the activity.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+				<!-- Target -->
+                <div class="content">
+                    <h2>Language Target</h2>
+					<p>( 🕓 Est. Time: 5 min)</p><br>
+					<p>Have / Has – affirmative, negative, and questions</p><br>
+					<p style="text-indent: -20px; margin-left: 35px;">a. Play the video of the target structure. This is particularly important for students to hear the language in context and become familiar with the natural use of the structure.</p><br>
+					<p style="text-indent: -20px; margin-left: 35px;">b. Clarify any questions students may have about the video.</p><br>
+		
+                </div>
+				<!-- Reading -->
+                <div class="content">
+                    <h2>Reading</h2>
+					<p>( 🕓 Est. Time: 20 min)</p><br>					
+					<p><span class="highlight">Reading 1. Text Message</span></p><br>
+					<table class="tabla-vocabulario2">
+						 <tr>
+						  <td>Dad! Guess what?<br><br>
+							I <span class="highlight">made</span> the city soccer team!! We have practice every Tuesday and Thursday after work. I'm really excited, but I'm also a little nervous. <br><br>
+							Can you come to my first game next weekend? 
+							</td>
+						 </tr>
+					</table><br>
+					<p><span class="highlight">Vocabulary</span></p><br>
+						<table class="tabla-vocabulario">
+							<tr>
+								<td>made</td>
+								<td><img src="CC/CC-29.png" alt="Image 29" class="iconcc"> <img src="CC/CC-16.png" alt="Image 16" class="iconcc"> <img src="CC/CC-33.png" alt="Image 33" class="iconcc"></td>
+								<td><span class="highlight">Def.</span> Today I make. Yesterday I made.<br>
+								<span class="highlight">Ex.</span> I made a cake yesterday.
+								</td>
+							</tr>
+						</table><br><br>					
+					<p><span class="highlight">Reading 2. Instagram Post</span></p><br>
+					<table class="tabla-vocabulario2">
+						 <tr>
+						  <td>First game next week! 💙<br><br>
+							Our new <span class="highlight">uniforms</span> are ready! I have <span class="highlight">number</span> 10 this <span class="highlight">season!</span> Our coach has a plan for our first game, and everyone is ready.<br><br>
+							🍀 We can't wait to play! 
+							</td>
+						 </tr>
+					</table><br>
+					<p><span class="highlight">Vocabulary</span></p><br>
+						<table class="tabla-vocabulario">
+							<tr>
+								<td>uniforms</td>
+								<td><img src="CC/CC-18.png" alt="Image 18" class="iconcc"> <img src="CC/CC-30.png" alt="Image 30" class="iconcc"> <img src="CC/CC-06.png" alt="Image 06" class="iconcc"> <img src="CC/CC-31.png" alt="Image 31" class="iconcc"> <img src="CC/CC-14.png" alt="Image 14" class="iconcc"> <img src="CC/CC-40.png" alt="Image 40" class="iconcc"> <img src="CC/CC-29.png" alt="Image 29" class="iconcc"> <img src="CC/CC-26.png" alt="Image 26" class="iconcc"></td>
+								<td><span class="highlight">Def.</span> Special clothes that people wear for work, school, or sports.<br>
+								<span class="highlight">Ex.</span> The players wear new uniforms for every game.
+								</td>
+							</tr>
+							<tr>
+								<td>number</td>
+								<td><img src="CC/CC-30.png" alt="Image 30" class="iconcc"> <img src="CC/CC-02.png" alt="Image 02" class="iconcc"> <img src="CC/CC-29.png" alt="Image 29" class="iconcc"> <img src="CC/CC-41.png" alt="Image 41" class="iconcc"> <img src="CC/CC-48.png" alt="Image 48" class="iconcc"></td>
+								<td><span class="highlight">Def.</span> A symbol used for counting or to identify something.<br>
+								<span class="highlight">Ex.</span> My favorite number is ten.
+								</td>
+							</tr>
+							<tr>
+								<td>season</td>
+								<td><img src="CC/CC-27.png" alt="Image 27" class="iconcc"> <img src="CC/CC-11.png" alt="Image 11" class="iconcc"> <img src="CC/CC-26.png" alt="Image 26" class="iconcc"> <img src="CC/CC-58.png" alt="Image 58" class="iconcc"></td>
+								<td><span class="highlight">Def.</span> A period of the year when people play a sport or do an activity.<br>
+								<span class="highlight">Ex.</span> The next soccer season starts in May.
+								</td>
+							</tr>
+						</table><br><br>				
+					<p><span class="highlight">Reading 3. Email</span></p><br>
+					<table class="tabla-vocabulario2">
+						 <tr>
+						  <td>Subject: Important <span class="highlight">information</span><br><br>
+							Hello Martin,<br><br>
+							You have <span class="highlight">locker</span> number 30 this season.<br><br>
+							Your locker has space for your uniform, shoes, and other <span class="highlight">items.</span> Please keep it clean after every practice.
+							See you on Tuesday!<br><br>
+							Coach Ramirez
+
+							</td>
+						 </tr>
+					</table><br>
+					<p><span class="highlight">Vocabulary</span></p><br>
+						<table class="tabla-vocabulario">
+							<tr>
+								<td>information</td>
+								<td><img src="CC/CC-03.png" alt="Image 03" class="iconcc"> <img src="CC/CC-30.png" alt="Image 30" class="iconcc"> <img src="CC/CC-31.png" alt="Image 31" class="iconcc"> <img src="CC/CC-48.png" alt="Image 48" class="iconcc"> <img src="CC/CC-29.png" alt="Image 29" class="iconcc"> <img src="CC/CC-16.png" alt="Image 16" class="iconcc"> <img src="CC/CC-44.png" alt="Image 44" class="iconcc"> <img src="CC/CC-58.png" alt="Image 58" class="iconcc"></td>
+								<td><span class="highlight">Def.</span> Facts or details that help you know something.<br>
+								<span class="highlight">Ex.</span> I need more information about the game. 
+								</td>
+							</tr>
+							<tr>
+								<td>locker</td>
+								<td><img src="CC/CC-37.png" alt="Image 37" class="iconcc"> <img src="CC/CC-05.png" alt="Image 05" class="iconcc"> <img src="CC/CC-39.png" alt="Image 39" class="iconcc"> <img src="CC/CC-48.png" alt="Image 48" class="iconcc"></td>
+								<td><span class="highlight">Def.</span> A small space where you keep your personal things at work, school, or the gym.<br>
+								<span class="highlight">Ex.</span> My locker number is 30.
+								</td>
+							</tr>
+							<tr>
+								<td>items</td>
+								<td><img src="CC/CC-15.png" alt="Image 15" class="iconcc"> <img src="CC/CC-25.png" alt="Image 25" class="iconcc"> <img src="CC/CC-57.png" alt="Image 57" class="iconcc"> <img src="CC/CC-26.png" alt="Image 26" class="iconcc"></td>
+								<td><span class="highlight">Def.</span> Things or objects.<br>
+								<span class="highlight">Ex.</span> Backpacks, notebooks, and pencils are school items.
+								</td>
+							</tr>
+						</table><br>
+                </div>
+				<!-- Practice -->
+                <div class="content">
+                    <h2>Practice</h2>
+					<!-- Acordeón para la sección de Dialogue -->
+					<p>( 🕓 Est. Time: 15 min)</p><br>
+					<p><span class="highlight">Spinning wheel</span></p><br>
+					<p>Procedure:</p>
+					<p>In this activity, students will use a spinning wheel to practice <span class="highlight">have</span> and <span class="highlight">has</span> as they answer comprehension questions related to the texts read in class.</p><br>
+					<p style="text-indent: -20px; margin-left: 35px;">a. Spin the wheel and ask a student to read the question found on the picture where it stops.</p>
+					<p style="text-indent: -20px; margin-left: 35px;">b. Have a second student answer the question. Follow the correction process.</p>
+					<p style="text-indent: -20px; margin-left: 35px;">c. Continue in the same way with the remaining pictures and different students until all 10 questions have been answered.</p><br>
+					
+						<table class="tabla-vocabulario tabla-practice">
+							<tr>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_1.png" style="width: 200px;"><br><br>
+								<span class="highlight">Answer</span> He says he made the city soccer team.</td>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_2.png" style="width: 200px;"><br><br>
+								<span class="highlight">Answer</span> They have practice every Tuesday and Thursday.</td>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_3.png" style="width: 200px;"><br><br>
+								<span class="highlight">Answer</span> He wants his dad to come.</td>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_4.png" style="width: 200px;"><br><br>
+								<span class="highlight">Answer</span> They have new uniforms.</td>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_5.png" style="width: 200px;"><br><br>
+								<span class="highlight">Answer</span> He has number 10.</td>
+								</td>
+							</tr>
+							<tr>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_6.png" style="width: 200px;"><br><br>
+								<span class="highlight">Answer</span> He has a plan for the first game.</td>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_7.png" style="width: 200px;"><br><br>
+								<span class="highlight">Answer</span> He has locker number 30.</td>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_8.png" style="width: 200px;"><br><br>
+								<span class="highlight">Answer</span> It has space for his uniform, shoes, and other items.</td>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_9.png" style="width: 200px;"><br><br>
+								<span class="highlight">Sample answer</span> his uniform, soccer shoes, water bottle, etc.</td>
+								<td><img src="ruleta/ruleta/ruleta/img/practice_10.png" style="width: 200px;"><br><br>
+								<span class="highlight">Sample answer</span> A game plan, soccer balls, uniforms, water bottles, etc.</td>
+							</tr>
+						</table><br><br>	
+					
+                </div>
+				<!-- Extra activities -->
+				<div class="content">
+                    <h2>Extra activities</h2>
+					<br><p>If there is any extra time, you may have students engage in further practice related to the contents of the lesson. You can have them perform any of the following activities:</p>
+                    <div class="accordion">
+						<div class="accordion-text">
+							<ul class="faq-text">
+								<li>
+								<div class="question-arrow">
+								  <span class="question">Challenge</span>
+								  <i class="bx bxs-chevron-down arrow"></i>
+								</div>
+								  <span class="line"></span>
+								  <p>This activity is intended for the students to practice the elements of the lesson by themselves in a fun way. However, you may also go over the activity in class and take advantage of the opportunity to provide extra practice.</p>
+								  <p>Choose a student and have him/her read the first item and the four options. Ask the student to choose the correct answer. Then click on the student’s answer. If it is correct, the platform will move to the next item. If it is wrong, the student can keep trying until the correct answer is chosen.</p>
+							  </li>
+								<li>
+								<div class="question-arrow">
+								  <span class="question">Spelling Bee Contest</span>
+								  <i class="bx bxs-chevron-down arrow"></i>
+								</div>
+								  <span class="line"></span>
+								  <p>This activity helps students practice spelling words found in the current lesson in a fun way. Choose a word from the dialogues in the lesson and call on a student. Then say the word once and use it in a sentence. Have the student pronounce the word again and spell it as you write it on the whiteboard. If the spelling of the word is right, congratulate the student. If it is wrong, cross out the word and write the correct word on the board. Then ask the student to say the word and spell it again, now following the correct spelling. Use the Color Chart to correct pronunciation.</p>
+									
+							  </li>
+						  		<li>
+									<div class="question-arrow">
+										<span class="question">Reading Practice</span>
+										<i class="bx bxs-chevron-down arrow"></i>
+									</div>
+									<span class="line"></span>
+									<p>This activity is intended for students to continue developing their reading skills. Have students read the short dialogues from the lesson once more. Follow the procedure for the reading activity.</p>
+								</li>
+								<li>
+                                    <div class="question-arrow">
+                                        <span class="question">Questions and answers related to the language targets. </span>
+                                        <i class="bx bxs-chevron-down arrow"></i>
+                                    </div>
+                                    <span class="line"></span>
+                                    <p>This is a controlled activity that leads students to the structures considered in the objective of the lesson, stressing on the areas where students had more trouble.</p>
+                                </li>
+							</ul>
+						</div>
+					</div>
+                </div>
+				
+        </div>
+    </div>
+    </div>
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		// Función para manejar el cambio de pestañas
+		function handleTabChange() {
+			adjustContainerHeight();
+		}
+
+		// Manejar el cambio de pestañas
+		const radioButtons = document.querySelectorAll('input[type="radio"]');
+		radioButtons.forEach(radio => {
+			radio.addEventListener('change', handleTabChange);
+		});
+
+	// Manejo de acordeón
+function adjustContainerHeight() {
+	const container = document.querySelector('.container');
+
+	if (!container) return;
+
+	container.style.height = 'auto';
+	container.style.minHeight = '0px';
+}
+
+function getActiveIndex() {
+    if (document.getElementById('daily').checked) return 1;
+    if (document.getElementById('steps').checked) return 2;
+    if (document.getElementById('seg1').checked) return 3;
+    if (document.getElementById('seg2').checked) return 4;
+    if (document.getElementById('seg3').checked) return 5;
+    if (document.getElementById('ext').checked) return 6;
+    return 1;
+}
+
+	// Escuchar cambios en el tamaño de la ventana para hacerlo responsivo
+	window.addEventListener('resize', adjustContainerHeight);
+
+	window.addEventListener('load', function () {
+		adjustContainerHeight();
+
+		setTimeout(adjustContainerHeight, 300);
+		setTimeout(adjustContainerHeight, 800);
+	});
+
+	// Ejecutar al cargar la página
+	adjustContainerHeight();
+
+
+
+	// Manejo del acordeón en la lista (solo un acordeón abierto a la vez)
+	const accordionItems = document.querySelectorAll('.accordion-text li');
+	accordionItems.forEach(item => {
+		item.addEventListener('click', function () {
+			const isOpen = this.classList.contains('showAnswer'); // Verifica si ya está abierto
+
+			// Cerrar todos los acordeones
+			accordionItems.forEach(i => i.classList.remove('showAnswer'));
+
+			// Si el acordeón no estaba abierto, abrirlo
+			if (!isOpen) {
+				this.classList.add('showAnswer');
+			}
+			setTimeout(adjustContainerHeight, 50);
+		});
+	});
+
+		// Manejo del acordeón en los elementos
+		const accordionItems2 = document.querySelectorAll('.accordion-item2');
+		accordionItems2.forEach(item => {
+			const header = item.querySelector('.accordion-header2');
+			header.addEventListener('click', function () {
+				const content = item.querySelector('.accordion-content2');
+				content.style.display = content.style.display === 'block' ? 'none' : 'block';
+				header.classList.toggle('active2');
+
+				// Ajustar la altura del contenedor cada vez que se abre/cierra un acordeón
+				adjustContainerHeight();
+			});
+		});
+		// Manejo del acordeón en los elementos
+		const accordionItems3 = document.querySelectorAll('.accordion-item');
+		accordionItems3.forEach(item => {
+			const header = item.querySelector('.accordion-header');
+			header.addEventListener('click', function () {
+				const content = item.querySelector('.accordion-content');
+				content.style.display = content.style.display === 'block' ? 'none' : 'block';
+				header.classList.toggle('active');
+
+				// Ajustar la altura del contenedor cada vez que se abre/cierra un acordeón
+				adjustContainerHeight();
+			});
+		});
+
+		// Inicializar altura del contenedor al cargar
+		adjustContainerHeight();
+	});
+		
+		document.addEventListener('DOMContentLoaded', function () {
+		  const img = document.querySelector('#roleplay-img'); // selecciona tu imagen
+		  if (img) {
+			img.style.display = 'none'; // la oculta al cargar
+		  }
+		});
+
+	</script>
+	</body>
+</html>
