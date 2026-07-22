@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vocab Reveal Standalone</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+	html,
+	body {
+	  width: 100%;
+	  height: 100%;
+	}
+
+	body {
+	  font-family: Arial, sans-serif;
+	  background: #ffffff;
+	  margin: 0;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	}
+
+	.vocab-card {
+	  width: 100%;
+	  max-width: 900px;
+	  min-height: 320px;
+	  background: #ffffff;
+	  border-radius: 14px;
+	  display: flex;
+	  flex-direction: column;
+	  justify-content: center;
+	  align-items: center;
+	  padding: 20px;
+	}
+
+    .containermov {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      max-width: 100%;
+    }
+
+    .circle {
+      flex: 1 1 100px;
+      max-width: 120px;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background-color: white;
+      border: 2px solid gray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .circle:hover {
+      transform: scale(1.1);
+    }
+
+    .circle img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .circle.revealed img {
+      opacity: 1;
+    }
+
+	.circle.revealed {
+	  background-color: transparent;
+	  border: 2px solid transparent;
+	}
+
+    .group-left,
+    .group-right {
+      display: flex;
+      gap: 10px;
+    }
+
+    .group-right {
+      margin-left: 100px;
+    }
+
+    .group-center {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btnCC {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 8px 40px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 15%;
+      min-width: 110px;
+    }
+
+    .btnCC:hover {
+      background-color: #1976d2;
+    }
+
+    .btnCC i {
+      font-size: 20px;
+    }
+
+    .final-image {
+      margin-bottom: 60px;
+      text-align: center;
+      display: none;
+      width: 100%;
+    }
+
+    .final-image img {
+      max-width: 60%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+	.vocab-word {
+	  display: block;
+	  width: fit-content;
+	  margin: 0 auto 26px; /* 🔥 esto lo centra bien */
+
+	  padding: 6px 16px;
+	  border-radius: 10px;
+
+	  background: #fdeaea;
+	  color: #e53935;
+
+	  font-size: 46px;
+	  font-weight: 700;
+
+	  text-decoration: underline;
+	  text-decoration-color: #e53935;
+	  text-underline-offset: 6px;
+	  text-decoration-thickness: 3px;
+	  margin-bottom: 100px;
+	}
+	  
+
+  </style>
+</head>
+<body>
+  <div class="vocab-card">
+	  <div class="vocab-word">practice</div>
+    <div class="containermov">
+      <div class="group-left">
+        <div class="circle" onclick="toggleImage(this)" data-index="0" data-reveal="0"><img src="CC/CC-24.png" alt="Imagen 1"></div>
+        <div class="circle" onclick="toggleImage(this)" data-index="1" data-reveal="1"><img src="CC/CC-40.png" alt="Imagen 2"></div>
+        <div class="circle" onclick="toggleImage(this)" data-index="2" data-reveal="2"><img src="CC/CC-01.png" alt="Imagen 3"></div>
+        <div class="circle" onclick="toggleImage(this)" data-index="3" data-reveal="3"><img src="CC/CC-39.png" alt="Imagen 4"></div>
+        <div class="circle" onclick="toggleImage(this)" data-index="4" data-reveal="4"><img src="CC/CC-25.png" alt="Imagen 5"></div>
+        <div class="circle" onclick="toggleImage(this)" data-index="5" data-reveal="5"><img src="CC/CC-03.png" alt="Imagen 6"></div>
+        <div class="circle" onclick="toggleImage(this)" data-index="6" data-reveal="6"><img src="CC/CC-27.png" alt="Imagen 7"></div>
+      </div>
+
+      <div class="group-center">
+        <button class="btnCC" onclick="playAudio('audios/practice.mp3')">
+          <i class="fas fa-volume-up"></i>
+        </button>
+      </div>
+
+      <!-- Opcional: si luego quieres imagen final, descomenta y cambia la ruta -->
+      <!--
+      <div class="final-image">
+        <img src="images/nervous.png" alt="Final image">
+      </div>
+      -->
+    </div>
+  </div>
+
+  <script>
+    const vocabRevealState = {};
+
+    function toggleImage(el) {
+      const card = el.closest('.vocab-card');
+      const circles = card.querySelectorAll('.circle');
+      const revealAttr = el.getAttribute('data-reveal');
+      const revealIndices = revealAttr ? revealAttr.split(',').map(Number) : [];
+      const cardIndex = Array.from(document.querySelectorAll('.vocab-card')).indexOf(card);
+
+      if (!vocabRevealState[cardIndex]) {
+        vocabRevealState[cardIndex] = new Set();
+      }
+
+      const revealedSet = vocabRevealState[cardIndex];
+      const revealedCount = revealedSet.size;
+      const groupStart = Math.min(...revealIndices);
+      const groupEnd = Math.max(...revealIndices);
+      const allGroupRevealed = revealIndices.every(idx => circles[idx]?.classList.contains('revealed'));
+
+      if (!allGroupRevealed) {
+        if (groupStart !== revealedCount) return;
+
+        revealIndices.forEach(idx => {
+          revealedSet.add(idx);
+          circles[idx]?.classList.add('revealed');
+        });
+      } else {
+        if (groupEnd !== revealedCount - 1) return;
+
+        revealIndices.forEach(idx => {
+          revealedSet.delete(idx);
+          circles[idx]?.classList.remove('revealed');
+        });
+      }
+
+      const finalImage = card.querySelector('.final-image');
+      if (revealedSet.size === circles.length) {
+        if (finalImage) finalImage.style.display = 'block';
+      } else {
+        if (finalImage) finalImage.style.display = 'none';
+      }
+    }
+
+    function resetImageReveal() {
+      const card = document.querySelector('.vocab-card');
+      if (!card) return;
+
+      card.querySelectorAll('.circle').forEach(c => c.classList.remove('revealed'));
+    }
+
+    function adjustGridColumns() {
+      document.querySelectorAll('.containermov').forEach(container => {
+        const totalCircles = container.querySelectorAll('.circle').length;
+        const columns = Math.min(totalCircles, 6);
+        container.style.display = 'grid';
+        container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+        container.style.gap = '10px';
+      });
+    }
+
+    function playAudio(file) {
+      const audio = new Audio(file);
+      audio.play();
+    }
+
+    function setupStackedCircles() {
+      document.querySelectorAll('.vocab-card .group-left').forEach(container => {
+        const circles = Array.from(container.querySelectorAll('.circle'));
+        const groups = {};
+
+        circles.forEach(el => {
+          const key = (el.dataset.reveal || '').replace(/\s+/g, '');
+          if (key.includes(',')) (groups[key] ||= []).push(el);
+        });
+
+        Object.values(groups).forEach(arr => {
+          arr.forEach(c => {
+            c.style.marginRight = '';
+            c.style.marginLeft = '';
+            c.style.zIndex = '';
+          });
+
+			if (arr.length >= 2) {
+			  arr[1].style.marginLeft = '-60px';
+
+			  // Imagen 2 arriba de Imagen 3
+			  arr[0].style.zIndex = '3';
+			  arr[1].style.zIndex = '2';
+
+			  arr[1].style.marginRight = '0px';
+			}
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', setupStackedCircles);
+  </script>
+</body>
+</html>
