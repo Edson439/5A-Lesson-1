@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruleta con Imagen</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 96vh;
+      flex-direction: column;
+    }
+
+    .wheel-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+    }
+
+	.wheel {
+	  width: 100%;
+	  height: 100%;
+	  border-radius: 50%;
+	  background: white;
+	  transition: transform 5s cubic-bezier(0.23, 1, 0.32, 1);
+	  position: relative;
+	}
+
+	.pointer {
+	  width: 40px; /* Ajusta según tamaño real de la imagen */
+	  height: 40px;
+	  position: absolute;
+	  top: -30px; /* Ajusta para que quede justo sobre la ruleta */
+	  left: 50%;
+	  transform: translateX(-50%);
+	  z-index: 10;
+	}
+
+	.pointer img {
+	  width: 100%;
+	  height: auto;
+	  display: block;
+	}
+
+	.slice img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: cover;
+	  object-position: center center; /* puedes ajustar esto */
+	}
+
+	.container {
+	  position: relative;
+	  width: 100%;
+	  height: 100%;
+	  border-radius: 50%;
+	  overflow: hidden;
+	}
+
+	.container div {
+	  height: 50%;
+	  width: 43%;
+	  position: absolute;
+	  left: 50%;
+	  top: 50%;
+	  transform-origin: 0% 0%;
+	  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+	}
+
+	.square-image {
+	  width: 100%;
+	  height: 85%;
+	  object-fit: cover;
+	}
+	.center-circle {
+	  position: absolute;
+	  width: 80px;
+	  height: 80px;
+	  background: #007bff;
+	  border-radius: 50%;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  z-index: 5;
+	}
+	/* Rotaciones para cada gajo (10 imágenes = 36° por sector) */
+	.one   { transform: rotate(-10deg)    translateX(-50%) translateY(-100%); }
+	.two   { transform: rotate(26deg)     translateX(-50%) translateY(-100%); }
+	.three { transform: rotate(62deg)     translateX(-50%) translateY(-100%); }
+	.four  { transform: rotate(98deg)     translateX(-50%) translateY(-100%); }
+	.five  { transform: rotate(134deg)    translateX(-50%) translateY(-100%); }
+	.six   { transform: rotate(170deg)    translateX(-50%) translateY(-100%); }
+	.seven { transform: rotate(206deg)    translateX(-50%) translateY(-100%); }
+	.eight { transform: rotate(242deg)    translateX(-50%) translateY(-100%); }
+	.nine  { transform: rotate(278deg)    translateX(-50%) translateY(-100%); }
+	.ten   { transform: rotate(314deg)    translateX(-50%) translateY(-100%); }
+
+	.container .one {
+	  clip-path: polygon(0% 0%, 80% 0%, 49% 100%);
+	}
+	.container .nine {
+	  clip-path: polygon(0% 0%, 80% 0%, 53% 100%);
+	}
+	.container .ten {
+	  clip-path: polygon(0% 0%, 80% -10%, 50% 100%);
+	}
+	  
+	.wheel-border {
+	  position: absolute;
+	  width: 110%; /* más grande que la ruleta */
+	  height: 110%;
+	  top: -5%;
+	  left: -5%;
+	  border-radius: 50%;
+	  pointer-events: none;
+	  z-index: 1;
+	}
+
+	.wheel-border img {
+	  width: 100%;
+	  height: 100%;
+	  object-fit: contain;
+	  border-radius: 50%;
+	  transform: rotate(-15deg);
+	}
+	.reset-btn {
+      margin-top: 40px;
+      padding: 6px 60px;
+      background-color: #213267;
+      color: white;
+      font-size: 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+	}
+
+	.reset-btn:hover {
+	  background-color: #2955a5;
+	}
+	.center-logo {
+	  width: 60%;
+	  height: 60%;
+	  object-fit: contain;
+	  display: block;
+	  margin: auto;
+	  position: relative;
+	  top: 20%;
+	}
+	  
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro transparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  position: relative;
+  width: 400px;
+  height: 400px;
+}
+
+.popup .close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  color: white; /* X blanca */
+  z-index: 1001;
+  background-color: red;
+  border-radius: 50%;
+  padding: 3px 12px 6px 12px;
+  font-family: Arial, sans-serif;
+}
+
+.popup img#result-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+  z-index: 1000;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+}
+
+.hidden {
+  display: none;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="wheel-container">
+    <div class="pointer">
+
+	  <img src="ruleta/img/pointer.png" alt="pointer">
+	</div>
+		<div class="wheel" id="wheel">
+		  <div class="center-circle">
+		  	<div class="center-circle">
+			  <img src="ruleta/img/Q_blanca-03.png" alt="Logo" class="center-logo">
+			</div>
+		  </div>
+		  <div class="container">
+			<div class="one"><img src="ruleta/img/practice_1.png" class="square-image"></div>
+			<div class="two"><img src="ruleta/img/practice_2.png" class="square-image"></div>
+			<div class="three"><img src="ruleta/img/practice_3.png" class="square-image"></div>
+			<div class="four"><img src="ruleta/img/practice_4.png" class="square-image"></div>
+			<div class="five"><img src="ruleta/img/practice_5.png" class="square-image"></div>
+			<div class="six"><img src="ruleta/img/practice_6.png" class="square-image"></div>
+			<div class="seven"><img src="ruleta/img/practice_7.png" class="square-image"></div>
+			<div class="eight"><img src="ruleta/img/practice_8.png" class="square-image"></div>
+			<div class="nine"><img src="ruleta/img/practice_9.png" class="square-image"></div>
+			<div class="ten"><img src="ruleta/img/practice_10.png" class="square-image"></div>
+		  </div>
+		  <div class="wheel-border">
+			<img src="ruleta/img/circulo.png" alt="Border Circle">
+		  </div>
+		</div>
+
+
+
+	</div>
+	
+	
+	
+	<button class="reset-btn" onclick="spinWheel()">
+	  <i class="fas fa-rotate-left"></i>
+	</button>
+
+	
+	<div id="result-popup" class="popup hidden">
+	  <span class="close" onclick="closePopup()">x</span>
+	  <img id="result-image" src="" alt="Resultado" />
+	</div>
+	
+	<audio id="wheelSound" src="assets/audios/Spinning_Wheel.mp3" preload="auto"></audio>
+
+<script>
+  const wheel = document.getElementById('wheel');
+  const resultPopup = document.getElementById('result-popup');
+  const resultImage = document.getElementById('result-image');
+  const wheelSound = document.getElementById('wheelSound');
+
+  // 🔊 Carga los nuevos audios
+  const popupSound = new Audio('assets/audios/Confirm_Reveal.wav');
+  const closeSound = new Audio('assets/audios/clo.wav'); // El nuevo audio de cierre
+  
+  // Función auxiliar para reproducir el audio de forma confiable
+  function playAudio(audioElement) {
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    audioElement.play().catch(error => {
+      console.error("Error al reproducir el audio:", error);
+    });
+  }
+
+  let rotation = 0;
+  let usedIndexes = [];
+
+  const results = [
+    { angle: 15, image: "ruleta/img/practice_1.png" },
+    { angle: 54, image: "ruleta/img/practice_10.png" },
+    { angle: 88, image: "ruleta/img/practice_9.png" },
+    { angle: 124, image: "ruleta/img/practice_8.png" },
+    { angle: 160, image: "ruleta/img/practice_7.png" },
+    { angle: 194, image: "ruleta/img/practice_6.png" },
+    { angle: 231, image: "ruleta/img/practice_5.png" },
+    { angle: 268, image: "ruleta/img/practice_4.png" },
+    { angle: 302, image: "ruleta/img/practice_3.png" },
+    { angle: 340, image: "ruleta/img/practice_2.png" }
+  ];
+
+function spinWheel() {
+  playAudio(wheelSound);
+
+  if (usedIndexes.length === results.length) {
+    alert("Todos los resultados han salido. Reiniciando.");
+    usedIndexes = [];
+  }
+
+  let index;
+  do {
+    index = Math.floor(Math.random() * results.length);
+  } while (usedIndexes.includes(index));
+
+  usedIndexes.push(index);
+
+  const targetAngle = results[index].angle;
+  const currentAngle = rotation % 360;
+  let extraRotation = (360 - currentAngle + targetAngle) % 360;
+  const totalRotation = rotation + 360 * 5 + extraRotation;
+
+  rotation = totalRotation;
+  wheel.style.transition = 'transform 5s cubic-bezier(0.23, 1, 0.32, 1)';
+  wheel.style.transform = `rotate(${rotation}deg)`;
+
+  setTimeout(() => {
+    resultImage.src = results[index].image;
+    resultPopup.classList.remove("hidden");
+    playAudio(popupSound);
+  }, 5200);
+}
+
+
+  function closePopup() {
+    playAudio(closeSound); // 🔊 Reproducir el audio de cierre
+    resultPopup.classList.add("hidden");
+  }
+
+  function resetWheel() {
+    resultPopup.classList.add("hidden");
+    rotation = 0;
+    wheel.style.transition = 'none';
+    wheel.style.transform = `rotate(0deg)`;
+    usedIndexes = [];
+  }
+</script>
+
+</body>
+</html>
