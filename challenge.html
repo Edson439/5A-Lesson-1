@@ -38,7 +38,7 @@
 	.card {
 	  background: #ffffff;
 	  border-radius: 24px;
-	  padding: 38px 42px 44px 42px;
+	  padding: 18px 10px 18px 10px;
 
 	}
 
@@ -95,6 +95,13 @@
 }
 
 /* Texto que corresponde a cada grupo de preguntas */
+.reading-title {
+  margin: 0 0 12px;
+  font-size: 25px;
+  font-weight: 700;
+  color: #0057b8;
+}
+
 .reading-text-box {
   width: 100%;
   background: #eaf4ff;
@@ -102,8 +109,8 @@
   border-radius: 14px;
   padding: 20px 24px;
   margin-bottom: 32px;
-  font-size: 21px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.3;
   color: #222;
   text-align: left;
 }
@@ -119,17 +126,17 @@
 	.options {
 	  display: flex;
 	  flex-direction: column;
-	  gap: 22px;
+	  gap: 12px;
 	  margin-top: 0;
 	}
 
 .option-btn {
-  width: 84%;
+  width: 90%;
   min-height: 56px;
   background: white;
   border: 2px solid #e6f0ff;
   border-radius: 12px;
-  padding: 24px 30px;
+  padding: 12px 30px;
   cursor: pointer;
   transition: all 0.25s ease;
   color: #222;
@@ -253,7 +260,7 @@
 }
 
 .feedback-label .emoji {
-  font-size: 36px;
+  font-size: 26px;
   line-height: 1;
   margin-bottom: 4px;
 }
@@ -316,7 +323,7 @@
       <div class="intro-emoji">😃📝</div>
       <h1>Ready for today’s challenge?</h1>
       <div class="intro-text">
-        Read each text carefully and choose the correct answer for each question.
+        Read the text carefully then choose the correct answer for each question.
       </div>
       <button class="main-btn" onclick="startGame()">Start</button>
     </div>
@@ -326,7 +333,7 @@
   <div id="questionScreen" class="screen">
     <div class="card">
       <div class="instructions">
-        Read each text carefully 🤓 and choose the correct answer. 📖✨
+        Read each text carefully 🤓 then choose the correct answer for each question. 📖✨
       </div>
 
       <div class="progress-container">
@@ -361,75 +368,29 @@
 
   <script>
 	  const readingTexts = [
-	  {
-		startQuestion: 0,
-		endQuestion: 3,
-		text: `Last weekend, Laura moved into her new apartment. She's very happy because it has a bedroom, a small kitchen, and a balcony with a nice view. She already has a table and two chairs, but she doesn't have a sofa yet. Her brother offers to give her his old sofa because he doesn't need it anymore. Now Laura only has one question: Does it fit in my living room?`
-	  },
-	  {
-		startQuestion: 4,
-		endQuestion: 6,
-		text: `Mrs. Green gives the class a science project. Ben has some colored paper and glue, but he doesn't have any markers. Mia has markers and scissors, but she doesn't have any glue. Ben asks, "Do you have extra markers?" Mia smiles and says, "Yes, I do. We have everything we need now!"`
-	  },
-	  {
-		startQuestion: 7,
-		endQuestion: 9,
-		text: `The Wilson family is getting ready for a weekend camping trip. Mom has the food, and Dad has the tent. Emma has a flashlight, but she doesn't have a sleeping bag. Her brother asks, "Do you have a warm blanket?" Emma laughs and says, "Of course I do!"`
-	  }
-	];
+  {
+    startQuestion: 0,
+    endQuestion: 9,
+    title: "A Busy Saturday",
+    text: `It’s Saturday morning, and the Wilson family has a lot to do. Mr. and Mrs. Wilson have two children, Jake and Emily.
+Jake has a soccer game today. He has his uniform and shoes in his sports bag, but he doesn’t have his water bottle. His sister Emily has it in her backpack. She also has a book, her phone, and some snacks.
+Mr. Wilson has the car keys, but he doesn’t have his phone. His phone is on the kitchen table. Mrs. Wilson has everything ready for lunch. She has sandwiches, fruit, and water in a large bag.
+Now the family is ready to leave. They have everything they need—except Jake still needs his water bottle!`
+  }
+];
 
     const questions = [
-      {
-        question: "Why is Laura happy?",
-        options: ["Because her apartment has a swimming pool.", "Because her apartment has a bedroom, a kitchen, and a balcony.", "Because her apartment has three bedrooms.", "Because her apartment has a big garage."],
-        correct: 1
-      },
-      {
-        question: "What doesn't Laura have yet?",
-        options: ["A table", "A bed", "A sofa", "A balcony"],
-        correct: 2
-      },
-      {
-        question: "Who has an old sofa he doesn’t need?",
-        options: ["Laura", "Laura's brother", "Laura's friend", "aura's neighbor"],
-        correct: 1
-      },
-      {
-        question: "What question does Laura have?",
-        options: ["Does the sofa fit in my living room?", "Does my brother have another sofa?", "Does the apartment have a parking space?", "Does the sofa have a different color?"],
-        correct: 0
-      },
-      {
-        question: "What project does the class have?",
-        options: ["An art project.", "A science project.", "A history project.", "A math project."],
-        correct: 1
-      },
-      {
-        question: "What doesn't Ben have?",
-        options: ["Glue", "Colored paper", "Markers", "Scissors"],
-        correct: 2
-      },
-      {
-        question: "Why is Mia happy at the end?",
-        options: ["Because the teacher finishes the project.", "Because Ben gives her new scissors.", "Because they have everything they need.", "Because they don't have homework."],
-        correct: 2
-      },
-      {
-        question: "Who has the tent?",
-        options: ["Mom", "Dad", "Emma", "Her brother"],
-        correct: 1
-      },
-      {
-        question: "What doesn't Emma have?",
-        options: ["A flashlight", "Food", "A sleeping bag", "A tent"],
-        correct: 2
-      },
-      {
-        question: "What does Emma say she has?",
-        options: ["A new tent.", "A warm blanket.", "Extra food.", "A map."],
-        correct: 1
-      }
-    ];
+{question:"How many children do Mr. and Mrs. Wilson have?",options:["They has one child","They have two children","They have three children's","They has four childs"],correct:1},
+{question:"What does Jake have today?",options:["He has a soccer game.","He have the birthday party.","They has a class.","Jake haves a meeting."],correct:0},
+{question:"What does Jake have in his sports bag?",options:["He have a phone and a book.","He has his uniform and shoes.","He haven’t food and water","His keys and phone have."],correct:1},
+{question:"What doesn’t Jake have?",options:["He doesn’t his uniform.","He doesn't has his shoes.","He doesn’t have his water bottle.","His sports bag doesn't have."],correct:2},
+{question:"Who has Jake’s water bottle?",options:["His mom have it.","He have his dad.","Emily has his water bottle.","Jake the bottle he has."],correct:2},
+{question:"What does Emily have in her backpack?",options:["She has book, a phone, some snacks, and Jake’s water bottle","She have shoes, a uniform, and a phone.","She sandwiches, fruit, and water has.","The Car keys has she."],correct:0},
+{question:"Does Mr. Wilson have the car keys?",options:["Yes, he does.","No, he doesn’t.","Yes, he doesn’t.","No, they do."],correct:0},
+{question:"Where does Mr. Wilson have his phone?",options:["He have in the car.","In his bag he has.","He has his phone on the kitchen table.","He have in his pocket the phone."],correct:2},
+{question:"What does Mrs. Wilson have for lunch?",options:["Pizza and water he have for lunch.","He has sandwiches, fruit, and water.","He haves snacks and juice.","Fruit and sandwiches only he have."],correct:1},
+{question:"Does the family have everything they need?",options:["Yes, they does.","No, they don’t.","Yes, does they.","No, he don’t."],correct:1}
+]
 
     const totalQuestions = questions.length;
     let currentQuestion = 0;
@@ -482,7 +443,10 @@
 
 		/* Mostrar el párrafo */
 		if (currentReading) {
-		  readingTextBox.textContent = currentReading.text;
+		  readingTextBox.innerHTML = `
+			<h3 class="reading-title">${currentReading.title}</h3>
+			<div>${currentReading.text.replace(/\n/g, "<br><br>")}</div>
+		  `;
 		  readingTextBox.style.display = "block";
 		} else {
 		  readingTextBox.textContent = "";
